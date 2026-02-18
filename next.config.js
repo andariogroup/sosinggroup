@@ -14,6 +14,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'sosinggroup.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.prestigiomkafe.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'prestigiomkafe.com',
+      },
     ],
   },
   env: {
