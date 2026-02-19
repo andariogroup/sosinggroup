@@ -1,10 +1,10 @@
-# Configurar dominio www.prestigiomkafe.com (Hostinger) con Vercel
+# Configurar dominio www.sosinggroup.com (Hostinger) con Vercel
 
 ## 1. Estado del proyecto
 
-- **Dominio:** `www.prestigiomkafe.com` y `prestigiomkafe.com`
+- **Dominio:** `www.sosinggroup.com` y `sosinggroup.com`
 - **Configuración en el repo:**
-  - `vercel.json` → `images.domains` incluye `www.prestigiomkafe.com` y `prestigiomkafe.com`
+  - `vercel.json` → `images.domains` incluye `www.sosinggroup.com` y `sosinggroup.com`
   - `next.config.js` → `images.remotePatterns` incluye ambos hostnames para optimización de imágenes
 
 No hace falta más configuración en el código. El dominio se asigna y verifica desde el dashboard de Vercel y con DNS en Hostinger.
@@ -17,14 +17,14 @@ No hace falta más configuración en el código. El dominio se asigna y verifica
 2. Abre el **proyecto** que corresponde a este repositorio (sosing / prestigiomkafe).
 3. Ve a **Settings** → **Domains**.
 4. En "Add domain" escribe:
-   - `www.prestigiomkafe.com`
+   - `www.sosinggroup.com`
    - Pulsa **Add**.
 5. Añade también (opcional pero recomendado):
-   - `prestigiomkafe.com`
+   - `sosinggroup.com`
    - Así tendrás el sitio en `www` y en la raíz.
 6. Vercel te mostrará cómo configurar el DNS:
-   - Para **www.prestigiomkafe.com**: un registro **CNAME** apuntando al valor que te indique Vercel (suele ser `cname.vercel-dns.com` o algo como `tu-proyecto.vercel.app`).
-   - Para **prestigiomkafe.com** (sin www): un registro **A** a la IP de Vercel (ej. `76.76.21.21`) o, si Hostinger lo permite, un **CNAME** al mismo destino que www (Vercel te lo indicará).
+   - Para **www.sosinggroup.com**: un registro **CNAME** apuntando al valor que te indique Vercel (suele ser `cname.vercel-dns.com` o algo como `tu-proyecto.vercel.app`).
+   - Para **sosinggroup.com** (sin www): un registro **A** a la IP de Vercel (ej. `76.76.21.21`) o, si Hostinger lo permite, un **CNAME** al mismo destino que www (Vercel te lo indicará).
 7. Anota exactamente:
    - Tipo de registro (CNAME o A).
    - Nombre/host (ej. `www` o `@`).
@@ -36,17 +36,17 @@ No hace falta más configuración en el código. El dominio se asigna y verifica
 ## 3. Qué hacer en Hostinger
 
 1. Entra a **[hostinger.com](https://www.hostinger.com)** → **Iniciar sesión**.
-2. En el panel, busca **Dominios** (o **Domains**) y selecciona **prestigiomkafe.com**.
+2. En el panel, busca **Dominios** (o **Domains**) y selecciona **sosinggroup.com**.
 3. Abre la sección **DNS / DNS Zone / Administrar DNS** (nombre similar según la interfaz).
 4. Crea o edita registros según lo que te indicó Vercel:
 
-   **Para www (www.prestigiomkafe.com):**
+   **Para www (www.sosinggroup.com):**
    - Tipo: **CNAME**
-   - Nombre/Host: `www` (o `www.prestigiomkafe.com` si te pide el nombre completo)
+   - Nombre/Host: `www` (o `www.sosinggroup.com` si te pide el nombre completo)
    - Apunta a / Valor: el que te dio Vercel (ej. `cname.vercel-dns.com` o la URL de tu proyecto)
    - TTL: por defecto (ej. 14400)
 
-   **Para la raíz (prestigiomkafe.com, sin www):**
+   **Para la raíz (sosinggroup.com, sin www):**
    - Si Vercel pide un **A**:
      - Tipo: **A**
      - Nombre/Host: `@` (o vacío, según Hostinger)
@@ -63,8 +63,8 @@ No hace falta más configuración en el código. El dominio se asigna y verifica
 
 | Dónde   | Acción |
 |--------|--------|
-| **Vercel** | Settings → Domains → Añadir `www.prestigiomkafe.com` y `prestigiomkafe.com` → Copiar instrucciones de DNS. |
-| **Hostinger** | DNS del dominio → Crear/editar CNAME para `www` y A (o ALIAS) para la raíz según lo que indique Vercel. |
+| **Vercel** | Settings → Domains → Añadir `www.sosinggroup.com` y `sosinggroup.com` → Copiar instrucciones de DNS. |
+| **Hostinger** | DNS del dominio **sosinggroup.com** → Crear/editar CNAME para `www` y A (o ALIAS) para la raíz según lo que indique Vercel. |
 | **Proyecto** | Ya está listo: dominio incluido en `vercel.json` y `next.config.js`. |
 
-Cuando el DNS esté bien configurado y Vercel marque el dominio como verificado, el sitio se verá en **https://www.prestigiomkafe.com** (y en **https://prestigiomkafe.com** si configuraste la raíz). Vercel asigna el certificado SSL automáticamente.
+Cuando el DNS esté bien configurado y Vercel marque el dominio como verificado, el sitio se verá en **https://www.sosinggroup.com** (y en **https://sosinggroup.com** si configuraste la raíz). Vercel asigna el certificado SSL automáticamente.
