@@ -4,12 +4,16 @@ import Footer from "@/components/Footer";
 import SectionTitle from "@/components/SectionTitle";
 import CTA from "@/components/CTA";
 import Link from "next/link";
+import Image from "next/image";
+import { Leaf, Droplets, Recycle, HardHat, LineChart, ClipboardCheck, Ruler, Check } from "lucide-react";
 
 const serviceData = {
   "ingenieria-ambiental": {
     title: "Ingeniería Ambiental",
     description: "Soluciones integrales para el manejo sostenible del entorno natural y construido.",
     icon: "🌿",
+    image: "/images/servicios/ingenieria-ambiental.webp",
+    lucide: "Leaf",
     problem: "Las empresas y municipios enfrentan desafíos crecientes para cumplir con la normativa ambiental mientras desarrollan sus proyectos de manera sostenible.",
     solution: "Ofrecemos estudios de impacto ambiental, licenciamiento, planes de manejo ambiental y auditorías para garantizar el cumplimiento normativo y la sostenibilidad de sus proyectos.",
     benefits: [
@@ -32,6 +36,8 @@ const serviceData = {
     title: "Agua Potable y Saneamiento",
     description: "Diseño, construcción y optimización de sistemas de agua potable y saneamiento básico.",
     icon: "💧",
+    image: "/images/servicios/agua-potable.webp",
+    lucide: "Droplets",
     problem: "Muchas comunidades y empresas carecen de sistemas adecuados de agua potable y saneamiento, afectando la salud pública y el desarrollo económico.",
     solution: "Desarrollamos soluciones integrales para acueductos, alcantarillado, tratamiento de agua y aguas residuales con tecnología de vanguardia y enfoque sostenible.",
     benefits: [
@@ -54,6 +60,8 @@ const serviceData = {
     title: "Gestión de Residuos",
     description: "Soluciones integrales para la gestión sostenible de residuos sólidos y peligrosos.",
     icon: "♻️",
+    image: "/images/servicios/gestion-residuos.webp",
+    lucide: "Recycle",
     problem: "El manejo inadecuado de residuos genera contaminación, riesgos sanitarios y pérdida de oportunidades de valorización.",
     solution: "Implementamos sistemas integrales de gestión de residuos que incluyen minimización, recolección, tratamiento, disposición final y valorización.",
     benefits: [
@@ -76,6 +84,8 @@ const serviceData = {
     title: "Ingeniería Civil",
     description: "Diseño y supervisión de obras civiles con estándares internacionales de calidad y seguridad.",
     icon: "🏗️",
+    image: "/images/servicios/ingenieria-civil.webp",
+    lucide: "HardHat",
     problem: "Los proyectos de infraestructura requieren diseño técnico preciso, supervisión rigurosa y cumplimiento de normativas para garantizar su viabilidad y durabilidad.",
     solution: "Ofrecemos servicios completos de diseño estructural, supervisión de obras, control de calidad y gestión de proyectos de ingeniería civil.",
     benefits: [
@@ -98,6 +108,8 @@ const serviceData = {
     title: "Consultoría Técnica",
     description: "Asesoría experta y estudios técnicos especializados para la toma de decisiones informadas.",
     icon: "📊",
+    image: "/images/servicios/saneamiento.webp",
+    lucide: "LineChart",
     problem: "Las organizaciones necesitan análisis técnicos objetivos y especializados para tomar decisiones estratégicas y optimizar sus operaciones.",
     solution: "Proporcionamos consultoría técnica especializada, estudios de prefactibilidad, informes periciales y auditorías técnicas para apoyar la toma de decisiones.",
     benefits: [
@@ -120,6 +132,8 @@ const serviceData = {
     title: "Interventoría y Supervisión",
     description: "Control técnico y seguimiento riguroso de obras y proyectos para garantizar calidad y cumplimiento.",
     icon: "👁️",
+    image: "/images/servicios/interventoria-supervision.webp",
+    lucide: "ClipboardCheck",
     problem: "Los proyectos de construcción requieren supervisión técnica independiente para garantizar el cumplimiento de especificaciones, plazos y estándares de calidad.",
     solution: "Ofrecemos servicios de interventoría técnica, supervisión de obras, control de calidad y gestión contractual para asegurar el éxito de los proyectos.",
     benefits: [
@@ -142,6 +156,8 @@ const serviceData = {
     title: "Topografía",
     description: "Levantamientos topográficos precisos y servicios de geomática para proyectos de ingeniería.",
     icon: "📐",
+    image: "/images/servicios/ingenieria-civil.webp",
+    lucide: "Ruler",
     problem: "Los proyectos de ingeniería requieren información topográfica precisa para el diseño, planificación y control de obras.",
     solution: "Realizamos levantamientos topográficos, georreferenciación, cartografía digital y control de obras con tecnología de precisión y software especializado.",
     benefits: [
@@ -210,16 +226,35 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       <LayoutComponents />
       <main>
         {/* Hero Section */}
-        <section className="section-padding bg-gradient-to-r from-primary to-primary-dark text-white">
-          <div className="container-custom">
-            <div className="max-w-4xl">
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="text-5xl">{service.icon}</div>
-                <div>
-                  <h1 className="text-4xl md:text-5xl font-bold font-heading">{service.title}</h1>
-                  <p className="text-xl text-gray-100 mt-2">{service.description}</p>
-                </div>
+        <section className="relative min-h-[420px] flex items-end overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src={service.image}
+              alt={service.title + " — SOSING S.A.S."}
+              fill
+              priority
+              quality={85}
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F241A] via-[#0F241A]/80 to-[#0F241A]/30"></div>
+          </div>
+
+          <div className="relative z-10 container-custom pb-14 pt-28 text-white">
+            <Link href="/services" className="inline-flex items-center gap-2 text-sm text-green-200 hover:text-white mb-5 transition-colors">
+              ← Todos los servicios
+            </Link>
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-5">
+                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                <span className="text-sm font-semibold text-green-100">Servicio SOSING</span>
               </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading leading-tight mb-4">
+                {service.title}
+              </h1>
+              <p className="text-lg md:text-xl text-gray-200 leading-relaxed max-w-2xl">
+                {service.description}
+              </p>
             </div>
           </div>
         </section>
@@ -275,12 +310,12 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {service.services.map((item, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <div className="text-lg">{service.icon}</div>
+                <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-green-200 transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <Check className="w-5 h-5 text-white" strokeWidth={3} />
                     </div>
-                    <h4 className="font-semibold text-gray-dark">{item}</h4>
+                    <h4 className="font-semibold text-gray-dark leading-snug pt-1.5">{item}</h4>
                   </div>
                 </div>
               ))}

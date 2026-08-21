@@ -1,6 +1,7 @@
 ﻿import LayoutComponents from "@/components/LayoutComponents";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 const services = [
   {
@@ -164,18 +165,18 @@ export default function ServicesPage() {
               {services.map((service, index) => (
                 <div key={index} className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-green-200 transform hover:-translate-y-2">
                   {/* Image Header */}
-                  <div className="relative h-48 overflow-hidden">
-                    <img 
-                      src={service.image} 
-                      alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  <div className="relative h-52 overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.title + " — SOSING S.A.S."}
+                      fill
+                      quality={82}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-2">
-                        <div className="text-2xl">{service.icon}</div>
-                      </div>
-                      <h3 className="text-xl font-bold">{service.title}</h3>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+                      <h3 className="text-xl font-bold leading-tight">{service.title}</h3>
                     </div>
                   </div>
                   
