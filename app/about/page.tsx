@@ -169,23 +169,55 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-sm mx-auto">
+            <div className="max-w-4xl mx-auto">
               {teamMembers.map((member, index) => (
-                <div key={index} className="group text-center">
-                  <div className="relative mb-6 overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-300">
-                    <Image
-                      src={member.image}
-                      alt={member.name + " — SOSING S.A.S."}
-                      width={600}
-                      height={800}
-                      quality={88}
-                      className="w-full h-80 object-cover object-top group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div
+                  key={index}
+                  className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-5">
+                    {/* Foto */}
+                    <div className="sm:col-span-2 relative h-72 sm:h-auto sm:min-h-[340px] overflow-hidden bg-gray-100">
+                      <Image
+                        src={member.image}
+                        alt={member.name + " — SOSING S.A.S."}
+                        fill
+                        quality={88}
+                        sizes="(max-width: 640px) 100vw, 40vw"
+                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+
+                    {/* Información */}
+                    <div className="sm:col-span-3 p-8 sm:p-10 flex flex-col justify-center">
+                      <div className="inline-flex items-center gap-2 mb-4">
+                        <span className="w-8 h-0.5 bg-green-600"></span>
+                        <span className="text-xs font-bold tracking-widest text-green-700 uppercase">
+                          {member.position}
+                        </span>
+                      </div>
+
+                      <h3 className="text-3xl md:text-4xl font-bold text-gray-dark mb-4 leading-tight">
+                        {member.name}
+                      </h3>
+
+                      <p className="text-gray-600 leading-relaxed mb-6">
+                        {member.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-semibold border border-green-100">
+                          Ingeniería Sanitaria
+                        </span>
+                        <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-semibold border border-green-100">
+                          Ingeniería Ambiental
+                        </span>
+                        <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-semibold border border-green-100">
+                          Gerencia de Proyectos
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-dark mb-2">{member.name}</h3>
-                  <p className="text-green-600 font-semibold mb-3">{member.position}</p>
-                  <p className="text-gray-600 text-sm">{member.description}</p>
                 </div>
               ))}
             </div>
