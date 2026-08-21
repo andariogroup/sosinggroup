@@ -1,46 +1,29 @@
 ﻿import LayoutComponents from "@/components/LayoutComponents";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 const teamMembers = [
   {
-    name: "Ing. Carlos Rodríguez",
+    name: "Ing. Yair Alfonso",
     position: "CEO & Fundador",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    description: "Ingeniero Civil con más de 15 años de experiencia en proyectos sostenibles."
-  },
-  {
-    name: "Ing. María González",
-    position: "Directora de Ingeniería Ambiental",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    description: "Experta en estudios de impacto ambiental y licenciamiento."
-  },
-  {
-    name: "Ing. Javier Martínez",
-    position: "Gerente de Proyectos",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    description: "Especialista en gestión y supervisión de obras de infraestructura."
-  },
-  {
-    name: "Ing. Laura Sánchez",
-    position: "Directora de Sostenibilidad",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    description: "Líder en implementación de prácticas sostenibles en proyectos de ingeniería."
+    image: "/images/equipo-yair-alfonso.jpg",
+    description: "Ingeniero Sanitario y Ambiental, Especialista en Gerencia de Proyectos. Fundador de SOSING S.A.S. Lidera la dirección técnica y estratégica de la firma en proyectos de agua, saneamiento, gestión ambiental e interventoría."
   }
 ];
 
 const certifications = [
-  { name: "ISO 9001", description: "Sistema de Gestión de Calidad", icon: "" },
-  { name: "ISO 14001", description: "Sistema de Gestión Ambiental", icon: "" },
-  { name: "OHSAS 18001", description: "Seguridad y Salud Ocupacional", icon: "" },
-  { name: "RUC", description: "Registro Único de Proponentes", icon: "" }
+  { name: "Sociedad legalmente constituida", description: "SOSING S.A.S. · NIT 900.342.838-7", icon: "" },
+  { name: "Profesionales con matrícula", description: "Ingenieros civiles y ambientales titulados", icon: "" },
+  { name: "Experiencia en contratación", description: "Proyectos con entidades públicas y cooperación internacional", icon: "" },
+  { name: "Cobertura nacional", description: "Operación en Cesar, La Guajira y demás regiones", icon: "" }
 ];
 
 const milestones = [
-  { year: "2014", title: "Fundación", description: "SOSING S.A.S nace con la visión de transformar la ingeniería en Colombia" },
-  { year: "2017", title: "Primer Gran Proyecto", description: "Planta de tratamiento para 50,000 habitantes" },
-  { year: "2020", title: "Expansión Nacional", description: "Presencia en más de 15 departamentos del país" },
-  { year: "2024", title: "Líderes en Sostenibilidad", description: "Reconocidos como la mejor empresa de ingeniería sostenible" }
+  { year: "2014", title: "Fundación", description: "SOSING S.A.S. nace en Valledupar con el propósito de llevar ingeniería ambiental de calidad al Caribe colombiano" },
+  { year: "2020", title: "Consolidación técnica", description: "Ampliación del portafolio hacia interventoría y supervisión de obras de infraestructura" },
+  { year: "2026", title: "Proyectos WASH en La Guajira", description: "Ejecución y supervisión de infraestructura de agua y saneamiento en comunidades de Maicao" },
+  { year: "2026", title: "Lanzamiento de ECOCHECK", description: "Primera plataforma digital de cumplimiento ambiental para pequeñas y medianas empresas en Colombia" }
 ];
 
 export default function AboutPage() {
@@ -182,18 +165,21 @@ export default function AboutPage() {
                 </span>
               </h2>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-                Profesionales altamente calificados comprometidos con la excelencia y sostenibilidad
+                Dirección técnica con formación especializada y experiencia comprobada en campo
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-sm mx-auto">
               {teamMembers.map((member, index) => (
                 <div key={index} className="group text-center">
                   <div className="relative mb-6 overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-300">
-                    <img 
-                      src={member.image} 
-                      alt={member.name}
-                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                    <Image
+                      src={member.image}
+                      alt={member.name + " — SOSING S.A.S."}
+                      width={600}
+                      height={800}
+                      quality={88}
+                      className="w-full h-80 object-cover object-top group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
