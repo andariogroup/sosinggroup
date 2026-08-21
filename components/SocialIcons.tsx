@@ -4,9 +4,8 @@ import { Linkedin, Facebook, Instagram } from "lucide-react";
 
 const SocialIcons = () => {
   const socialLinks = [
-    { name: "LinkedIn", href: "https://linkedin.com/company/sosing", icon: Linkedin },
-    { name: "Facebook", href: "https://facebook.com/sosing", icon: Facebook },
-    { name: "Instagram", href: "https://instagram.com/sosing", icon: Instagram },
+    { name: "Facebook", href: "https://www.facebook.com/sosing2010/", icon: Facebook },
+    { name: "Instagram", href: "https://instagram.com/sosing_sas", icon: Instagram },
   ];
 
   return (

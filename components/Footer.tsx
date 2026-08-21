@@ -20,24 +20,21 @@ const Footer = () => {
     ],
     resources: [
       { name: "Portafolio", href: "/portfolio" },
-      { name: "Casos de Éxito", href: "/portfolio#cases" },
-      { name: "Blog", href: "/blog" },
-      { name: "Certificaciones", href: "/certifications" },
+      { name: "Diagnóstico gratis", href: "/#ecocheck" },
+      { name: "Tienda de servicios", href: "/#ecocheck" },
+      { name: "Plataforma 24/7", href: "/ingresar" },
     ],
     legal: [
       { name: "Tratamiento de Datos", href: "/politica-datos" },
-      { name: "Términos y Condiciones", href: "/terms" },
-      { name: "Política de Calidad", href: "/quality" },
-      { name: "Sostenibilidad", href: "/sustainability" },
+      { name: "Contacto", href: "/contact" },
     ],
   };
 
   const contactInfo = [
-    { icon: "", label: "Email", value: "contact@sosinggroup.com", href: "mailto:contact@sosinggroup.com" },
-    { icon: "", label: "Teléfono", value: "+57 311 6608217", href: "tel:+573116608217" },
-    { icon: "", label: "WhatsApp", value: "+57 311 6608217", href: "https://wa.me/573116608217", action: "Enviar mensaje" },
-    { icon: "", label: "Llamar", value: "+57 311 6608217", href: "tel:+573116608217", action: "Llamar ahora" },
-    { icon: "", label: "Dirección", value: "Av Simón Bolívar 21-44, Valledupar, Cesar", href: "#" },
+    { icon: "", label: "Email", value: "comercial@sosinggroup.com", href: "mailto:comercial@sosinggroup.com" },
+    { icon: "", label: "WhatsApp", value: "+57 311 660 8217", href: "https://wa.me/573116608217", action: "Enviar mensaje" },
+    { icon: "", label: "Teléfono", value: "+57 311 660 8217", href: "tel:+573116608217", action: "Llamar ahora" },
+    { icon: "", label: "Dirección", value: "Av Simón Bolívar 21-44, Valledupar, Cesar", href: "https://maps.google.com/?q=Av+Simon+Bolivar+21-44+Valledupar+Cesar" },
   ];
 
   return (

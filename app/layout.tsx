@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BotonWhatsApp from "@/components/BotonWhatsApp";
 import "./globals.css";
 
 const organizationSchema = {
@@ -161,6 +162,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {children}
+        <BotonWhatsApp />
       </body>
     </html>
   );

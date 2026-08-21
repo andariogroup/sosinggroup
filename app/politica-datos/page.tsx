@@ -33,7 +33,7 @@ export default function PoliticaDatosPage() {
               <Dato label="Razón social" valor="SOSING S.A.S. — Soluciones Sostenibles de Ingeniería" />
               <Dato label="NIT" valor="900.342.838-7" />
               <Dato label="Dirección" valor="Cra. 9 #13B-35 Local 3, Barrio Cañahuate, Valledupar, Cesar" />
-              <Dato label="Correo electrónico" valor="proyectos@sosinggroup.com" />
+              <Dato label="Correo electrónico" valor="comercial@sosinggroup.com" />
               <Dato label="Teléfono" valor="311 660 8217" />
             </Seccion>
 
@@ -109,8 +109,8 @@ export default function PoliticaDatosPage() {
             <Seccion titulo="7. Cómo ejercer sus derechos">
               <p>
                 Puede ejercer cualquiera de estos derechos escribiendo a{" "}
-                <a href="mailto:proyectos@sosinggroup.com" className="text-green-700 font-semibold">
-                  proyectos@sosinggroup.com
+                <a href="mailto:comercial@sosinggroup.com" className="text-green-700 font-semibold">
+                  comercial@sosinggroup.com
                 </a>{" "}
                 o al WhatsApp 311 660 8217, indicando su nombre, documento de identidad, el derecho
                 que desea ejercer y una descripción clara de su solicitud.

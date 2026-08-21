@@ -81,7 +81,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-dark mb-1">Email</h3>
-                      <p className="text-gray-600">contact@sosinggroup.com</p>
+                      <p className="text-gray-600">comercial@sosinggroup.com</p>
                       <p className="text-gray-600">Respuesta en 24 horas</p>
                     </div>
                   </div>
