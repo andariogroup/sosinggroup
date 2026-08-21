@@ -25,7 +25,7 @@ const Footer = () => {
       { name: "Certificaciones", href: "/certifications" },
     ],
     legal: [
-      { name: "Política de Privacidad", href: "/privacy" },
+      { name: "Tratamiento de Datos", href: "/politica-datos" },
       { name: "Términos y Condiciones", href: "/terms" },
       { name: "Política de Calidad", href: "/quality" },
       { name: "Sostenibilidad", href: "/sustainability" },

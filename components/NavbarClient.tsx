@@ -28,6 +28,7 @@ const Navbar = () => {
     { name: "Quiénes Somos", href: "/about" },
     { name: "Servicios", href: "/services" },
     { name: "Portafolio", href: "/portfolio" },
+    { name: "ECOCHECK", href: "/#ecocheck" },
     { name: "Contacto", href: "/contact" },
   ];
 
@@ -95,6 +96,13 @@ const Navbar = () => {
                 )}
               </Link>
             ))}
+
+            <Link
+              href="/ingresar"
+              className="ml-2 px-4 py-2 rounded-lg border-2 border-primary-600 text-primary-600 text-sm font-bold hover:bg-primary-600 hover:text-white transition-colors"
+            >
+              Ingresar
+            </Link>
           </div>
 
           <button

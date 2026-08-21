@@ -8,7 +8,7 @@ const projects = [
     title: "Planta de Tratamiento de Aguas Residuales",
     category: "Saneamiento Básico",
     location: "Bogotá, Colombia",
-    image: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/images/proyecto-ptap-anaripa.jpg",
     description: "Diseño y construcción de planta moderna para tratamiento de aguas residuales serving 50,000 habitantes.",
     features: ["Capacidad: 50,000 habitantes", "Tecnología de membranas", "Reuso de agua tratada", "Certificación ISO 14001"],
     year: "2023",
@@ -20,7 +20,7 @@ const projects = [
     title: "Sistema de Gestión de Residuos Sólidos",
     category: "Gestión Ambiental",
     location: "Medellín, Colombia",
-    image: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/images/proyecto-excavacion.jpg",
     description: "Implementación integral de sistema de recolección, tratamiento y disposición final de residuos sólidos.",
     features: ["100 toneladas/día", "Planta de compostaje", "Programa de reciclaje", "Educación ambiental"],
     year: "2023",
@@ -32,7 +32,7 @@ const projects = [
     title: "Infraestructura Vial Sostenible",
     category: "Ingeniería Civil",
     location: "Cali, Colombia",
-    image: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/images/proyecto-ptap-caseta.jpg",
     description: "Construcción de 25km de carreteras con materiales eco-amigables y drenaje sostenible.",
     features: ["25 km de vía", "Asfalto reciclado", "Drenaje permeable", "Reducción de CO2"],
     year: "2022",
@@ -44,7 +44,7 @@ const projects = [
     title: "Estudio de Impacto Ambiental - Hidroeléctrica",
     category: "Consultoría Ambiental",
     location: "Antioquia, Colombia",
-    image: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/images/proyecto-kasutalain.jpg",
     description: "Estudio completo de impacto ambiental para proyecto hidroeléctrico de 50MW.",
     features: ["50 MW capacidad", "Estudio de biodiversidad", "Plan de manejo", "Licencia ambiental"],
     year: "2022",
@@ -56,7 +56,7 @@ const projects = [
     title: "Sistema de Acueducto Rural",
     category: "Agua Potable",
     location: "Boyacá, Colombia",
-    image: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/images/proyecto-ptap-tanque.jpg",
     description: "Implementación de sistema de agua potable para 15 comunidades rurales.",
     features: ["15 comunidades", "5,000 beneficiarios", "Energía solar", "Mantenimiento comunitario"],
     year: "2021",
@@ -68,7 +68,7 @@ const projects = [
     title: "Interventoría Edificio Sostenible",
     category: "Interventoría",
     location: "Barranquilla, Colombia",
-    image: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/images/proyecto-bombeo.jpg",
     description: "Supervisión técnica de construcción de edificio corporativo con certificación LEED.",
     features: ["15 pisos", "Certificación LEED Gold", "Energía solar", "Sistema de recolección de agua"],
     year: "2021",
@@ -91,7 +91,7 @@ export default function PortfolioPage() {
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/images/portfolio-hero.jpg')`
               }}
             ></div>
           </div>

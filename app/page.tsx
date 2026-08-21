@@ -1,15 +1,16 @@
 ﻿import LayoutComponents from "@/components/LayoutComponents";
+import EcocheckSection from "@/components/EcocheckSection";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 
 const services = [
-  { title: "Ingeniería Ambiental", description: "Estudios de impacto ambiental, licencias, permisos y soluciones sostenibles", icon: "🌿" },
-  { title: "Agua Potable y Saneamiento", description: "Diseño, construcción y operación de sistemas de agua y saneamiento", icon: "💧" },
-  { title: "Gestión de Residuos", description: "Soluciones integrales para la recolección y tratamiento de residuos", icon: "♻️" },
-  { title: "Ingeniería Civil", description: "Diseño y supervisión de obras civiles e infraestructura", icon: "🏗️" },
-  { title: "Consultoría Técnica", description: "Asesoría experta en proyectos de ingeniería", icon: "📊" },
-  { title: "Interventoría y Supervisión", description: "Control y seguimiento de obras y proyectos", icon: "👁️" }
+  { title: "Ingeniería Ambiental", description: "Estudios de impacto ambiental, licencias, permisos y soluciones sostenibles", icon: "🌿", image: "/images/servicios/ingenieria-ambiental.webp" },
+  { title: "Agua Potable y Saneamiento", description: "Diseño, construcción y operación de sistemas de agua y saneamiento", icon: "💧", image: "/images/servicios/agua-potable.webp" },
+  { title: "Gestión de Residuos", description: "Soluciones integrales para la recolección y tratamiento de residuos", icon: "♻️", image: "/images/servicios/gestion-residuos.webp" },
+  { title: "Ingeniería Civil", description: "Diseño y supervisión de obras civiles e infraestructura", icon: "🏗️", image: "/images/servicios/ingenieria-civil.webp" },
+  { title: "Consultoría Técnica", description: "Asesoría experta en proyectos de ingeniería", icon: "📊", image: "/images/servicios/saneamiento.webp" },
+  { title: "Interventoría y Supervisión", description: "Control y seguimiento de obras y proyectos", icon: "👁️", image: "/images/servicios/interventoria-supervision.webp" }
 ];
 
 const stats = [
@@ -188,11 +189,13 @@ export default function Home() {
               
               <div className="relative">
                 <div className="relative rounded-3xl overflow-hidden shadow-hard group">
-                  <img 
-                    src="https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Ingeniería Sostenible - Proyectos de SOSING S.A.S"
+                  <Image
+                    src="/images/nosotros-equipo.jpg"
+                    alt="Equipo SOSING S.A.S. en campo — supervisión técnica en La Guajira"
+                    width={800}
+                    height={600}
+                    quality={85}
                     className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   <div className="absolute bottom-8 left-8 text-white">
@@ -227,13 +230,18 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {services.map((service, index) => (
                 <div key={index} className="card-hover group">
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-white/20 rounded-full -mr-10 -mt-10"></div>
-                    <div className="relative z-10">
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <div className="text-4xl">{service.icon}</div>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white">{service.title}</h3>
+                  <div className="relative h-56 overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.title + " — SOSING S.A.S."}
+                      fill
+                      quality={82}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-2xl font-bold text-white leading-tight">{service.title}</h3>
                     </div>
                   </div>
                   
@@ -275,6 +283,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ECOCHECK — Plataforma de cumplimiento ambiental */}
+        <EcocheckSection />
 
         {/* CTA Section */}
         <section className="section-padding bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
