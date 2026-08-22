@@ -1,5 +1,6 @@
 ﻿import LayoutComponents from "@/components/LayoutComponents";
 import EcocheckSection from "@/components/EcocheckSection";
+import PreguntasFrecuentes from "@/components/PreguntasFrecuentes";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
@@ -74,24 +75,25 @@ export default function Home() {
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-slide-up animate-delay-300">
                 <Link 
+                  href="/#ecocheck" 
+                  className="group flex items-center justify-center space-x-3 shadow-2xl px-8 py-4 rounded-xl font-semibold text-[#241804] bg-[#C99A3A] hover:bg-[#B4872F] transition-all duration-300"
+                  aria-label="Hacer diagnóstico ambiental gratuito"
+                >
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#241804] opacity-60"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#241804]"></span>
+                  </span>
+                  <span>Diagnóstico ambiental GRATIS</span>
+                </Link>
+                <Link 
                   href="/services" 
-                  className="btn-primary group flex items-center justify-center space-x-3 shadow-2xl"
+                  className="btn-secondary group flex items-center justify-center space-x-3 shadow-2xl"
                   aria-label="Explorar nuestros servicios de ingeniería ambiental"
                 >
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path d="M9 5l7 7-7 7"></path>
                   </svg>
                   <span>Explorar Servicios</span>
-                </Link>
-                <Link 
-                  href="/contact" 
-                  className="btn-secondary group flex items-center justify-center space-x-3 shadow-2xl"
-                  aria-label="Contactar expertos en ingeniería ambiental"
-                >
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                  </svg>
-                  <span>Contactar Expertos</span>
                 </Link>
               </div>
               
@@ -286,6 +288,9 @@ export default function Home() {
 
         {/* ECOCHECK — Plataforma de cumplimiento ambiental */}
         <EcocheckSection />
+
+        {/* Preguntas frecuentes */}
+        <PreguntasFrecuentes />
 
         {/* CTA Section */}
         <section className="section-padding bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">

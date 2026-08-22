@@ -1,5 +1,6 @@
 ﻿import LayoutComponents from "@/components/LayoutComponents";
 import Footer from "@/components/Footer";
+import FormularioContacto from "@/components/FormularioContacto";
 
 export default function ContactPage() {
   return (
@@ -146,124 +147,7 @@ export default function ContactPage() {
               </div>
 
               {/* Contact Form */}
-              <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12 border border-gray-100">
-                <h2 className="text-2xl font-bold text-gray-dark mb-6">Envíanos un Mensaje</h2>
-                
-                <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                        Nombre Completo *
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                        placeholder="Tu nombre completo"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                        Empresa
-                      </label>
-                      <input
-                        type="text"
-                        id="company"
-                        name="company"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                        placeholder="Nombre de tu empresa"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                        placeholder="tu@email.com"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                        Teléfono
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                        placeholder="+57 (300) 555 0123"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
-                      Servicio de Interés
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                    >
-                      <option value="">Selecciona un servicio</option>
-                      <option value="ingenieria-ambiental">Ingeniería Ambiental</option>
-                      <option value="agua-potable">Agua Potable y Saneamiento</option>
-                      <option value="gestion-residuos">Gestión de Residuos</option>
-                      <option value="ingenieria-civil">Ingeniería Civil</option>
-                      <option value="consultoria">Consultoría Técnica</option>
-                      <option value="interventoria">Interventoría y Supervisión</option>
-                      <option value="general">Consulta General</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                      Mensaje *
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                      placeholder="Cuéntanos sobre tu proyecto..."
-                    ></textarea>
-                  </div>
-
-                  <div className="flex items-start">
-                    <input
-                      type="checkbox"
-                      id="privacy"
-                      name="privacy"
-                      required
-                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                    />
-                    <label htmlFor="privacy" className="ml-3 text-sm text-gray-600">
-                      Acepto la <a href="#" className="text-green-600 hover:text-green-700">política de privacidad</a> y 
-                      autorizo el tratamiento de mis datos personales.
-                    </label>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                  >
-                    Enviar Mensaje
-                  </button>
-                </form>
-              </div>
+              <FormularioContacto />
             </div>
           </div>
         </section>
