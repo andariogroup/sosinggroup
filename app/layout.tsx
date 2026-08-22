@@ -1,43 +1,98 @@
 import { Metadata } from "next";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "SOSING S.A.S",
+  "@type": "ProfessionalService",
+  "@id": "https://www.sosinggroup.com/#organizacion",
+  name: "SOSING S.A.S.",
+  alternateName: "Soluciones Sostenibles de Ingeniería",
   url: "https://www.sosinggroup.com",
-  logo: "https://www.sosinggroup.com/logo.png",
-  description: "Líderes en ingeniería sostenible en Colombia con más de 10 años de experiencia",
+  logo: "https://www.sosinggroup.com/icons/icon-512x512.png",
+  image: "https://www.sosinggroup.com/images/proyecto-ptap-anaripa.jpg",
+  description:
+    "Consultoría e ingeniería ambiental en Valledupar, Cesar y La Guajira. Diagnóstico ambiental, trámites ante autoridades ambientales, agua potable, saneamiento, gestión de residuos e interventoría de obras.",
+  taxID: "900342838-7",
+  foundingDate: "2014",
+  priceRange: "$$",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Calle 100 # 50-50",
-    addressLocality: "Bogotá",
-    addressRegion: "Cundinamarca",
-    postalCode: "110111",
+    streetAddress: "Av Simón Bolívar 21-44",
+    addressLocality: "Valledupar",
+    addressRegion: "Cesar",
     addressCountry: "CO",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 10.4631,
+    longitude: -73.2532,
+  },
+  areaServed: [
+    { "@type": "AdministrativeArea", name: "Cesar" },
+    { "@type": "AdministrativeArea", name: "La Guajira" },
+    { "@type": "Country", name: "Colombia" },
+  ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+57-1-300-555-0123",
+    telephone: "+57-311-660-8217",
+    email: "comercial@sosinggroup.com",
     contactType: "customer service",
+    areaServed: "CO",
     availableLanguage: ["Spanish"],
   },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "08:00",
+      closes: "12:00",
+    },
+  ],
   sameAs: [
-    "https://www.linkedin.com/company/sosing",
-    "https://www.facebook.com/sosing",
-    "https://twitter.com/sosing",
+    "https://www.facebook.com/sosing2010/",
+    "https://www.instagram.com/sosing_sas",
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Servicios de Ingeniería",
+    name: "Servicios de ingeniería y consultoría ambiental",
     itemListElement: [
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
+          name: "Diagnóstico Ambiental Express",
+          description:
+            "Informe con las obligaciones ambientales aplicables a su negocio, la autoridad competente, nivel de riesgo y plan de acción.",
+        },
+        price: "49900",
+        priceCurrency: "COP",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "SOSING Ambiental 24/7",
+          description:
+            "Plataforma de cumplimiento ambiental con control de RESPEL, residuos sólidos, ACU, RCD y alertas de vencimientos.",
+        },
+        price: "39900",
+        priceCurrency: "COP",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
           name: "Ingeniería Ambiental",
-          description: "Estudios de impacto ambiental, licencias, permisos y soluciones sostenibles",
+          description: "Estudios de impacto ambiental, licencias, permisos y planes de manejo.",
         },
       },
       {
@@ -45,12 +100,21 @@ const organizationSchema = {
         itemOffered: {
           "@type": "Service",
           name: "Agua Potable y Saneamiento",
-          description: "Diseño, construcción y operación de sistemas de agua y saneamiento",
+          description: "Diseño, construcción y operación de sistemas de acueducto y saneamiento básico.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Interventoría y Supervisión",
+          description: "Control técnico, administrativo y financiero de obras de infraestructura.",
         },
       },
     ],
   },
 };
+
 
 export const metadata: Metadata = {
   title: "SOSING S.A.S - Soluciones Sostenibles de Ingeniería | Colombia",
@@ -168,6 +232,8 @@ export default function RootLayout({
       <body className="antialiased">
         {children}
         <BotonWhatsApp />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
