@@ -116,7 +116,8 @@ export default function Home() {
           <nav className="absolute bottom-8 left-8 z-20" aria-label="Redes sociales">
             <div className="flex flex-col space-y-4">
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/company/43282677/"
+                aria-label="SOSING en LinkedIn" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-10 h-10 glass-dark rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
@@ -126,7 +127,8 @@ export default function Home() {
                 </svg>
               </a>
               <a 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/sosing2010/"
+                aria-label="SOSING en Facebook" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-10 h-10 glass-dark rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
@@ -136,7 +138,8 @@ export default function Home() {
                 </svg>
               </a>
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/sosing_sas/"
+                aria-label="SOSING en Instagram" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-10 h-10 glass-dark rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
@@ -192,17 +195,18 @@ export default function Home() {
               <div className="relative">
                 <div className="relative rounded-3xl overflow-hidden shadow-hard group">
                   <Image
-                    src="/images/nosotros-equipo.jpg"
-                    alt="Equipo SOSING S.A.S. en campo — supervisión técnica en La Guajira"
-                    width={800}
-                    height={600}
-                    quality={85}
-                    className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700"
+                    src="/images/hero-gaviones.jpg"
+                    alt="Obra de gaviones para protección de ribera — SOSING S.A.S."
+                    width={1920}
+                    height={1080}
+                    quality={82}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent"></div>
                   <div className="absolute bottom-8 left-8 text-white">
-                    <h3 className="text-2xl font-bold mb-2">SOSING S.A.S</h3>
-                    <p className="text-lg">Ingeniería con Propósito</p>
+                    <h3 className="text-2xl font-bold mb-1 drop-shadow-lg">SOSING S.A.S</h3>
+                    <p className="text-lg text-gray-100 drop-shadow-md">Ingeniería con Propósito</p>
                   </div>
                 </div>
               </div>
