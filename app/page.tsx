@@ -195,8 +195,8 @@ export default function Home() {
               <div className="relative">
                 <div className="relative rounded-3xl overflow-hidden shadow-hard group">
                   <Image
-                    src="/images/hero-gaviones.jpg"
-                    alt="Obra de gaviones para protección de ribera — SOSING S.A.S."
+                    src="/images/ptap-pasipamana.jpg"
+                    alt="PTAP Pasipamana: sistema solar fotovoltaico, tanque de almacenamiento y caseta de operación — SOSING S.A.S."
                     width={1920}
                     height={1080}
                     quality={82}

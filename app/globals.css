@@ -145,14 +145,14 @@
   }
 
   .about-hero-bg {
-    background-image: url("/images/about-hero.jpg");
+    background-image: url("/images/paneles-solares.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   }
 
   .contact-hero-bg {
-    background-image: url("/images/contact-hero.jpg");
+    background-image: url("/images/oficina-sosing.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

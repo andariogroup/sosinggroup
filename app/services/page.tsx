@@ -9,7 +9,7 @@ const services = [
     title: "Ingeniería Ambiental",
     description: "Soluciones integrales para el manejo sostenible del entorno natural y construido.",
     icon: "🌿",
-    image: "/images/servicios/ingenieria-ambiental.webp",
+    image: "/images/paneles-solares.jpg",
     features: [
       "Estudios de Impacto Ambiental (EIA)",
       "Licencias Ambientales y Permisos",
@@ -29,7 +29,7 @@ const services = [
     title: "Agua Potable y Saneamiento",
     description: "Diseño, construcción y optimización de sistemas de agua potable y saneamiento básico.",
     icon: "💧",
-    image: "/images/servicios/agua-potable.webp",
+    image: "/images/planta-osmosis.jpg",
     features: [
       "Diseño de Acueductos y Redes",
       "Plantas de Tratamiento de Agua",
@@ -89,7 +89,7 @@ const services = [
     title: "Consultoría Técnica",
     description: "Asesoría experta y estudios técnicos especializados para toma de decisiones informadas.",
     icon: "📊",
-    image: "/images/servicios/consultoria-tecnica.webp",
+    image: "/images/equipo-osmosis.jpg",
     features: [
       "Estudios de Prefactibilidad y Factibilidad",
       "Informes Técnicos y Peritajes",
@@ -109,7 +109,7 @@ const services = [
     title: "Interventoría y Supervisión",
     description: "Control técnico y seguimiento riguroso de obras y proyectos para garantizar calidad.",
     icon: "👁️",
-    image: "/images/servicios/consultoria-tecnica.webp",
+    image: "/images/filtros-tableros.jpg",
     features: [
       "Interventoría Técnica de Obras",
       "Supervisión de Construcción",
