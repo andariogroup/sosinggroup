@@ -62,7 +62,7 @@ export default function Home() {
               </div>
               
               <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 font-heading leading-tight animate-slide-up text-center">
-                <span className="block mb-2 text-white/95">Ingeniería que</span>
+                <span className="mb-2 text-white/95">Ingeniería que</span>
                 <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
                   Protege el Futuro
                 </span>
@@ -163,7 +163,7 @@ export default function Home() {
                 
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                   <span className="text-gray-dark">Líderes en</span>
-                  <span className="block text-gradient">
+                  <span className="text-gradient">
                     Ingeniería Sostenible
                   </span>
                 </h2>
@@ -222,8 +222,8 @@ export default function Home() {
                 <span className="text-sm font-semibold">Nuestros Servicios</span>
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Soluciones Integrales de
-                <span className="block text-gradient">
+                Soluciones Integrales de{" "}
+                <span className="text-gradient">
                   Ingeniería
                 </span>
               </h2>
@@ -310,8 +310,8 @@ export default function Home() {
                 <span className="text-sm font-semibold">Inicia tu Proyecto Sostenible</span>
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                ¿Listo para Transformar
-                <span className="block text-green-100">Ideas en Realidad?</span>
+                ¿Listo para Transformar{" "}
+                <span className="text-green-100">Ideas en Realidad?</span>
               </h2>
               <p className="text-xl text-green-100 mb-12 max-w-3xl mx-auto leading-relaxed">
                 Únete a más de 150 clientes que confían en nuestra experiencia para desarrollar 

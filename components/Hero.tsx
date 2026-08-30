@@ -14,8 +14,8 @@ export default function Hero() {
       <div className="relative z-10 container-custom text-center text-white">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 font-heading leading-tight">
-            Soluciones Sostenibles de
-            <span className="block text-secondary">Ingeniería</span>
+            Soluciones Sostenibles de{" "}
+            <span className="text-secondary">Ingeniería</span>
             para el Desarrollo de Colombia
           </h1>
           

@@ -43,8 +43,8 @@ export default function AboutPage() {
           <div className="relative z-10 container-custom text-center text-white">
             <div className="max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-heading leading-tight">
-                Quiénes
-                <span className="block bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                Quiénes{" "}
+                <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                   Somos
                 </span>
               </h1>
@@ -103,8 +103,8 @@ export default function AboutPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Nuestros
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Nuestros{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Valores
                 </span>
               </h2>
@@ -159,8 +159,8 @@ export default function AboutPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Nuestro
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Nuestro{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Equipo
                 </span>
               </h2>
@@ -229,8 +229,8 @@ export default function AboutPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Certificaciones y
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Certificaciones y{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                 Reconocimientos
                 </span>
               </h2>
@@ -253,8 +253,8 @@ export default function AboutPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Nuestra
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Nuestra{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Historia
                 </span>
               </h2>
@@ -290,8 +290,8 @@ export default function AboutPage() {
           <div className="container-custom text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Únete a Nuestra
-                <span className="block text-green-100">Historia de Éxito</span>
+                Únete a Nuestra{" "}
+                <span className="text-green-100">Historia de Éxito</span>
               </h2>
               <p className="text-xl text-green-100 mb-12 max-w-3xl mx-auto leading-relaxed">
                 Descubre cómo podemos ayudarte a transformar tus proyectos en soluciones sostenibles 

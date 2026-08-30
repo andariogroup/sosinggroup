@@ -146,8 +146,8 @@ export default function ServicesPage() {
           <div className="relative z-10 container-custom text-center text-white">
             <div className="max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-heading leading-tight">
-                Nuestros
-                <span className="block bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                Nuestros{" "}
+                <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                   Servicios
                 </span>
               </h1>
@@ -238,8 +238,8 @@ export default function ServicesPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Nuestro
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Nuestro{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Proceso
                 </span>
               </h2>
@@ -289,8 +289,8 @@ export default function ServicesPage() {
           <div className="container-custom text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                ¿Listo para Iniciar tu
-                <span className="block text-green-100">Proyecto Sostenible?</span>
+                ¿Listo para Iniciar tu{" "}
+                <span className="text-green-100">Proyecto Sostenible?</span>
               </h2>
               <p className="text-xl text-green-100 mb-12 max-w-3xl mx-auto leading-relaxed">
                 Contáctanos para una consulta gratuita y descubre cómo podemos ayudarte a 

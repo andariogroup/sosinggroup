@@ -99,8 +99,8 @@ export default function PortfolioPage() {
           <div className="relative z-10 container-custom text-center text-white">
             <div className="max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-heading leading-tight">
-                Nuestro
-                <span className="block bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                Nuestro{" "}
+                <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                   Portafolio
                 </span>
               </h1>
@@ -140,8 +140,8 @@ export default function PortfolioPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Proyectos
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Proyectos{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Destacados
                 </span>
               </h2>
@@ -262,8 +262,8 @@ export default function PortfolioPage() {
           <div className="container-custom text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                ¿Listo para tu Próximo
-                <span className="block text-green-100">Proyecto de Éxito?</span>
+                ¿Listo para tu Próximo{" "}
+                <span className="text-green-100">Proyecto de Éxito?</span>
               </h2>
               <p className="text-xl text-green-100 mb-12 max-w-3xl mx-auto leading-relaxed">
                 Únete a más de 150 clientes que han confiado en nosotros para transformar 

@@ -199,8 +199,8 @@ export default function ContactPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-dark mb-6 leading-tight">
-                Preguntas
-                <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Preguntas{" "}
+                <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Frecuentes
                 </span>
               </h2>
