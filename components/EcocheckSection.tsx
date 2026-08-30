@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CapturaProspecto from "./CapturaProspecto";
 
 /* =========================================================
    SOSING ECOCHECK — Sección para sosinggroup.com
@@ -44,31 +45,34 @@ const QUESTIONS: Q[] = [
 
 type Item = { id: string; name: string; desc: string; price: number; cat: string; link?: string };
 
-const CATALOG: Item[] = [
-  { id: "test", name: "Test de cumplimiento ambiental", desc: "Evaluación rápida de 5 preguntas.", price: 19900, cat: "Diagnósticos", link: "https://checkout.wompi.co/l/CNdStv" },
-  { id: "diagnostico", name: "Diagnóstico Ambiental Express", desc: "Informe con obligaciones, riesgos y checklist.", price: 49900, cat: "Diagnósticos", link: "https://checkout.wompi.co/l/65IJJb" },
-  { id: "diag-vert", name: "Diagnóstico de vertimientos", desc: "Evaluación de tus vertimientos y su manejo.", price: 149900, cat: "Diagnósticos", link: "https://checkout.wompi.co/l/nYpbJV" },
-  { id: "diag-estab", name: "Diagnóstico ambiental de establecimiento", desc: "Evaluación integral en sitio.", price: 199900, cat: "Diagnósticos", link: "https://checkout.wompi.co/l/evBpHn" },
-  { id: "check-rest", name: "Checklist ambiental para restaurantes", desc: "Lista de verificación sectorial.", price: 29900, cat: "Kits sectoriales", link: "https://checkout.wompi.co/l/AUzNQx" },
-  { id: "kit-respel", name: "Kit RESPEL para pequeña empresa", desc: "Formatos y guía de residuos peligrosos.", price: 79900, cat: "Kits sectoriales", link: "https://checkout.wompi.co/l/siVRGR" },
-  { id: "kit-pgirs", name: "Kit PGIRS empresarial", desc: "Plan de gestión integral de residuos sólidos.", price: 69900, cat: "Kits sectoriales", link: "https://checkout.wompi.co/l/uif1wa" },
-  { id: "kit-acu", name: "Kit manejo de ACU", desc: "Guía y formatos para aceite de cocina usado.", price: 39900, cat: "Kits sectoriales", link: "https://checkout.wompi.co/l/ruO8DY" },
-  { id: "kit-rest", name: "Kit ambiental para restaurantes", desc: "Checklist + formatos + buenas prácticas.", price: 79900, cat: "Kits sectoriales", link: "https://checkout.wompi.co/l/Am0tUT" },
-  { id: "kit-contra", name: "Kit ambiental para contratistas", desc: "Checklist de obra + RCD + bitácora.", price: 149900, cat: "Kits sectoriales", link: "https://checkout.wompi.co/l/o1Uaqe" },
-  { id: "rev-rua", name: "Revisión de RUA", desc: "Revisión técnica de tu Registro Único Ambiental.", price: 99900, cat: "Trámites", link: "https://checkout.wompi.co/l/Cdl91B" },
-  { id: "prep-rua", name: "Preparación de información para RUA", desc: "Tu información lista para radicar.", price: 149900, cat: "Trámites", link: "https://checkout.wompi.co/l/gR3mQd" },
-  { id: "rev-req", name: "Revisión de requerimiento ambiental", desc: "Análisis de oficios, actas o autos.", price: 99900, cat: "Trámites", link: "https://checkout.wompi.co/l/46mleK" },
-  { id: "concepto", name: "Concepto ambiental express", desc: "Concepto técnico preliminar.", price: 149900, cat: "Trámites", link: "https://checkout.wompi.co/l/6ZpKGZ" },
-  { id: "rev-pma", name: "Revisión de PMA", desc: "Revisión de tu Plan de Manejo Ambiental.", price: 199900, cat: "Trámites", link: "https://checkout.wompi.co/l/P3EeMT" },
-  { id: "matriz", name: "Matriz de requisitos legales ambientales", desc: "Normograma aplicable a tu actividad.", price: 99900, cat: "Trámites", link: "https://checkout.wompi.co/l/aNwE6m" },
-  { id: "revisa-doc", name: "Revisa este documento", desc: "Sube un oficio o resolución y te decimos qué hacer.", price: 49900, cat: "Trámites", link: "https://checkout.wompi.co/l/wDgbvX" },
+/* ============================================================
+   RECURSOS GRATUITOS — el gancho.
+   Se entregan a cambio del correo. Demuestran criterio técnico
+   y capturan el contacto.
+   ============================================================ */
+const RECURSOS = [
+  { id: "kit-acu", name: "Kit manejo de Aceite de Cocina Usado", desc: "Guía completa, formatos de registro y checklist. Incluye la obligación de inscripción que casi nadie cumple.", pages: 8, file: "/kits/kit-acu-40eb10495cbc.pdf", para: "Restaurantes y comidas rápidas" },
+  { id: "check-rest", name: "Checklist ambiental para restaurantes", desc: "Lista de verificación de 6 frentes con semáforo de riesgo.", pages: 4, file: "/kits/checklist-restaurantes-9a9f3f8f3379.pdf", para: "Establecimientos de comida" },
+  { id: "kit-respel", name: "Kit RESPEL", desc: "Categorización de generador, formatos y manejo de residuos peligrosos.", pages: 7, file: "/kits/kit-respel-7018a31d9c3f.pdf", para: "Talleres, clínicas, industria" },
+  { id: "kit-pgirs", name: "Kit PGIRS empresarial", desc: "Código de colores vigente, caracterización y tasa de aprovechamiento.", pages: 9, file: "/kits/kit-pgirs-dbcbf9658d62.pdf", para: "Cualquier empresa" },
+  { id: "kit-contra", name: "Kit ambiental para contratistas", desc: "Gestión de RCD, bitácora de obra y qué revisa la interventoría.", pages: 13, file: "/kits/kit-contratistas-3ff5717a8efd.pdf", para: "Constructores y obra civil" },
+  { id: "matriz", name: "Matriz de requisitos legales", desc: "Normograma ambiental colombiano para identificar qué le aplica.", pages: 5, file: "/kits/matriz-legal-e16c478891ff.pdf", para: "Empresas en licitación" },
 ];
 
-const PLANS = [
-  { id: "basico", name: "Plan Básico", tagline: "Conoce tus obligaciones ambientales.", price: 49900, period: "pago único", features: ["Diagnóstico completo", "Informe en PDF", "Checklist de documentos"], link: "https://checkout.wompi.co/l/TSdYdJ" },
-  { id: "pro", name: "Plan Pro", tagline: "Diagnóstico + documentos + plan de acción.", price: 149900, period: "pago único", features: ["Todo lo del Plan Básico", "Documentos básicos", "Plan de acción priorizado"], link: "https://checkout.wompi.co/l/7Bx9rM" },
-  { id: "empresa", name: "Plan Empresa", tagline: "Cobertura completa para tu operación.", price: 299900, period: "pago único", features: ["Todo lo del Plan Pro", "Matriz legal ambiental", "Asesoría personalizada"], link: "https://checkout.wompi.co/l/rDtokH" },
-  { id: "anual", name: "SOSING Ambiental 24/7", tagline: "Vigilancia continua de tu cumplimiento.", price: 39900, period: "/mes", features: ["Monitoreo permanente", "Alertas normativas", "Soporte prioritario"], featured: true, link: "https://checkout.wompi.co/l/3dDrd4" },
+/* ============================================================
+   SERVICIOS PROFESIONALES — con firma de ingeniero.
+   Esto es lo que una IA no puede entregar.
+   ============================================================ */
+const SERVICIOS: Item[] = [
+  { id: "revisa-doc", name: "Revisa este documento", desc: "Envíenos el oficio, acta o resolución que recibió. Le explicamos qué le están pidiendo, qué plazo tiene y cómo responder.", price: 49900, cat: "Respuesta a la autoridad", link: "https://checkout.wompi.co/l/wDgbvX" },
+  { id: "rev-req", name: "Revisión de requerimiento ambiental", desc: "Análisis del requerimiento y estrategia de respuesta, firmada por ingeniero.", price: 99900, cat: "Respuesta a la autoridad", link: "https://checkout.wompi.co/l/46mleK" },
+  { id: "diagnostico", name: "Diagnóstico Ambiental Express", desc: "Informe profesional con sus obligaciones, autoridad competente, nivel de riesgo y plan de acción.", price: 49900, cat: "Diagnósticos con firma", link: "https://checkout.wompi.co/l/65IJJb" },
+  { id: "diag-vert", name: "Diagnóstico de vertimientos", desc: "Evaluación técnica de sus vertimientos. Requiere caracterización de laboratorio.", price: 149900, cat: "Diagnósticos con firma", link: "https://checkout.wompi.co/l/nYpbJV" },
+  { id: "diag-estab", name: "Diagnóstico de establecimiento en sitio", desc: "Visita técnica y evaluación integral de su establecimiento.", price: 199900, cat: "Diagnósticos con firma", link: "https://checkout.wompi.co/l/evBpHn" },
+  { id: "concepto", name: "Concepto ambiental express", desc: "Concepto técnico preliminar firmado por ingeniero con matrícula profesional.", price: 149900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/6ZpKGZ" },
+  { id: "rev-rua", name: "Revisión de RUA", desc: "Revisión técnica de su Registro Único Ambiental antes de radicar.", price: 99900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/Cdl91B" },
+  { id: "prep-rua", name: "Preparación de información para RUA", desc: "Consolidamos y organizamos su información lista para radicar.", price: 149900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/gR3mQd" },
+  { id: "rev-pma", name: "Revisión de Plan de Manejo Ambiental", desc: "Revisión de suficiencia técnica de su PMA.", price: 199900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/P3EeMT" },
 ];
 
 const fmt = (n: number) => "$" + n.toLocaleString("es-CO");
@@ -86,7 +90,7 @@ function Semaforo({ level }: { level: "rojo" | "amarillo" | "verde" }) {
 }
 
 export default function EcocheckSection() {
-  const [tab, setTab] = useState<"diagnostico" | "tienda" | "planes">("diagnostico");
+  const [tab, setTab] = useState<"diagnostico" | "tienda" | "planes" | "recursos">("diagnostico");
   const [step, setStep] = useState<"intro" | "tipo" | "depto" | "quiz" | "resultado">("intro");
   const [tipo, setTipo] = useState("");
   const [depto, setDepto] = useState("");
@@ -111,10 +115,6 @@ export default function EcocheckSection() {
 
   const reset = () => { setStep("intro"); setTipo(""); setDepto(""); setAnswers({}); setQIndex(0); };
 
-  const grouped = CATALOG.reduce<Record<string, Item[]>>((acc, p) => {
-    (acc[p.cat] = acc[p.cat] || []).push(p); return acc;
-  }, {});
-
   return (
     <section id="ecocheck" className="py-24 bg-[#16211B] text-white">
       <div className="max-w-6xl mx-auto px-6">
@@ -132,7 +132,7 @@ export default function EcocheckSection() {
 
         {/* Tabs */}
         <div className="flex justify-center gap-2 mb-12 flex-wrap">
-          {([["diagnostico", "Diagnóstico gratis"], ["planes", "Suscripción 24/7"], ["tienda", "Servicios puntuales"]] as const).map(([id, label]) => (
+          {([["diagnostico", "Diagnóstico gratis"], ["planes", "Suscripción 24/7"], ["tienda", "Servicios con firma"], ["recursos", "Guías gratuitas"]] as const).map(([id, label]) => (
             <button key={id} onClick={() => setTab(id)}
               className={`px-5 py-2.5 rounded-full text-sm font-semibold transition ${
                 tab === id ? "bg-[#C99A3A] text-[#241804]" : "border border-white/25 text-white hover:bg-white/10"
@@ -247,6 +247,35 @@ export default function EcocheckSection() {
                   ))}
                 </div>
 
+                <CapturaProspecto
+                  tipoNegocio={tipo}
+                  departamento={depto}
+                  autoridad={CARS[depto] || "Por determinar"}
+                  nivelRiesgo={level === "rojo" ? "ALTO" : level === "amarillo" ? "MEDIO" : "BAJO"}
+                  riesgos={riesgos}
+                />
+
+                <div className="border border-[#9FD9B6] bg-[#F0F7F2] rounded-xl p-5 mb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 bg-[#1F5C38] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="font-bold text-[#16211B] mb-1">Empiece por aquí, sin costo</div>
+                      <p className="text-sm text-[#5C6A62] leading-relaxed mb-3">
+                        Descargue nuestras guías prácticas con los formatos, el código de colores
+                        vigente y los contactos de su autoridad ambiental.
+                      </p>
+                      <button onClick={() => setTab("recursos")}
+                        className="text-sm font-bold text-[#1F5C38] hover:underline">
+                        Ver guías gratuitas →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="bg-[#16211B] text-white rounded-xl p-6 mb-4">
                   <div className="text-lg font-extrabold mb-1">Diagnóstico Ambiental Express</div>
                   <p className="text-sm text-[#C9D6CF] mb-4">
@@ -295,53 +324,101 @@ export default function EcocheckSection() {
 
         {/* TIENDA */}
         {tab === "tienda" && (
-          <div className="space-y-10">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-start gap-4">
-              <span className="text-[#C99A3A] text-xl shrink-0">💡</span>
-              <div>
-                <div className="font-bold text-sm mb-1">Servicios puntuales, sin suscripción</div>
-                <div className="text-sm text-[#C9D6CF]">
-                  Ideales si necesita resolver algo específico hoy. Si su negocio genera obligaciones
-                  todos los meses, la{" "}
-                  <button onClick={() => setTab("planes")} className="text-[#C99A3A] font-bold underline">
-                    suscripción 24/7
-                  </button>{" "}
-                  le sale más rentable y le evita tener que estar pendiente.
-                </div>
-              </div>
+          <div>
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <h3 className="text-2xl font-bold mb-3">Servicios firmados por ingeniero</h3>
+              <p className="text-[#C9D6CF] leading-relaxed">
+                Un documento firmado por un profesional con matrícula tiene validez ante la
+                autoridad ambiental. Aquí no vendemos información: entregamos criterio técnico
+                con responsabilidad profesional detrás.
+              </p>
             </div>
 
-            {Object.entries(grouped).map(([cat, items]) => (
-              <div key={cat}>
-                <div className="text-xs uppercase tracking-[2px] text-[#C99A3A] font-bold mb-4">{cat}</div>
+            {["Respuesta a la autoridad", "Diagnósticos con firma", "Trámites y conceptos"].map((cat) => (
+              <div key={cat} className="mb-10">
+                <div className="text-[#9FD9B6] text-xs font-bold tracking-[1.5px] uppercase mb-4">
+                  {cat}
+                </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {items.map((p) => (
-                    <div key={p.id} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col hover:bg-white/10 transition">
-                      <div className="font-bold mb-1">{p.name}</div>
-                      <div className="text-sm text-[#C9D6CF] mb-4 flex-1">{p.desc}</div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xl font-extrabold">{fmt(p.price)}</span>
-                        {p.link ? (
-                          <a href={p.link} target="_blank" rel="noopener noreferrer"
-                            className="bg-[#C99A3A] text-[#241804] px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#B4872F] transition">
-                            Comprar
-                          </a>
-                        ) : (
-                          <a href="/contact"
-                            className="border border-white/25 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition">
-                            Solicitar
-                          </a>
-                        )}
+                  {SERVICIOS.filter((s) => s.cat === cat).map((s) => (
+                    <div key={s.id} className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col hover:border-[#C99A3A]/40 transition">
+                      <div className="font-bold mb-2 leading-snug">{s.name}</div>
+                      <p className="text-sm text-[#9FA9A3] leading-relaxed flex-1 mb-4">{s.desc}</p>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-xl font-extrabold text-[#C99A3A]">{fmt(s.price)}</span>
+                        <a href={s.link} target="_blank" rel="noopener noreferrer"
+                          className="bg-[#C99A3A] text-[#241804] px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#B4872F] transition">
+                          Solicitar
+                        </a>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             ))}
+
+            <div className="max-w-2xl mx-auto mt-10 bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
+              <p className="text-sm text-[#C9D6CF] leading-relaxed">
+                Los servicios que requieren datos de campo (caracterización, aforos, visita en sitio)
+                se entregan en el plazo acordado, no de forma inmediata. Le confirmamos tiempos
+                al recibir su solicitud.
+              </p>
+            </div>
           </div>
         )}
 
-        {/* PLANES */}
+        {tab === "recursos" && (
+          <div>
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#9FD9B6]/15 border border-[#9FD9B6]/30 rounded-full mb-4">
+                <span className="w-2 h-2 bg-[#9FD9B6] rounded-full"></span>
+                <span className="text-sm font-semibold text-[#9FD9B6]">Descarga libre</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Guías prácticas, sin costo</h3>
+              <p className="text-[#C9D6CF] leading-relaxed">
+                Elaboradas por nuestros ingenieros con la normativa vigente y el contexto real
+                de Cesar y La Guajira. Incluyen los datos de contacto de las autoridades, los
+                programas posconsumo y los formatos que le van a pedir.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {RECURSOS.map((r) => (
+                <a key={r.id} href={r.file} target="_blank" rel="noopener noreferrer"
+                  className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col hover:border-[#9FD9B6]/50 hover:bg-white/10 transition group">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <span className="text-[10px] font-bold tracking-wider uppercase text-[#9FD9B6] bg-[#9FD9B6]/10 px-2 py-1 rounded">
+                      {r.para}
+                    </span>
+                    <span className="text-xs text-[#9FA9A3] whitespace-nowrap">{r.pages} pág.</span>
+                  </div>
+                  <div className="font-bold mb-2 leading-snug group-hover:text-[#9FD9B6] transition">{r.name}</div>
+                  <p className="text-sm text-[#9FA9A3] leading-relaxed flex-1 mb-4">{r.desc}</p>
+                  <span className="inline-flex items-center gap-2 text-sm font-bold text-[#9FD9B6]">
+                    Descargar PDF
+                    <svg className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </span>
+                </a>
+              ))}
+            </div>
+
+            <div className="max-w-2xl mx-auto mt-10 bg-[#25382E] border border-white/10 rounded-2xl p-6 text-center">
+              <div className="font-bold mb-2">¿Le sirvió el material?</div>
+              <p className="text-sm text-[#C9D6CF] leading-relaxed mb-5">
+                Estas guías le dicen qué debe hacer. Si prefiere que nosotros lo mantengamos
+                al día —con alertas antes de cada vencimiento y sus informes firmados—
+                esa es la suscripción SOSING Ambiental 24/7.
+              </p>
+              <button onClick={() => setTab("planes")}
+                className="bg-[#C99A3A] text-[#241804] px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#B4872F] transition">
+                Ver la suscripción
+              </button>
+            </div>
+          </div>
+        )}
+
         {tab === "planes" && (
           <div>
             {/* HÉROE: suscripción */}
@@ -395,33 +472,43 @@ export default function EcocheckSection() {
               </div>
             </div>
 
-            {/* Alternativas de pago único */}
-            <div className="text-center mb-6">
-              <div className="text-sm text-[#9FA9A3]">
-                ¿Prefiere un servicio puntual sin suscripción?
+            {/* Por qué la suscripción y no un pago único */}
+            <div className="max-w-3xl mx-auto mt-12">
+              <div className="text-center mb-6">
+                <div className="text-lg font-bold">¿Por qué una suscripción y no un documento?</div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                  <div className="text-[#9FD9B6] font-bold text-sm mb-2">El cumplimiento no es de una vez</div>
+                  <p className="text-sm text-[#9FA9A3] leading-relaxed">
+                    Cada mes genera residuos. Cada trimestre vence algo. Un documento le sirve hoy;
+                    dentro de seis meses ya está desactualizado.
+                  </p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                  <div className="text-[#9FD9B6] font-bold text-sm mb-2">Las alertas evitan la multa</div>
+                  <p className="text-sm text-[#9FA9A3] leading-relaxed">
+                    El sistema le avisa antes de cada vencimiento. Una sola sanción evitada paga
+                    varios años de suscripción.
+                  </p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                  <div className="text-[#9FD9B6] font-bold text-sm mb-2">Sus informes van firmados</div>
+                  <p className="text-sm text-[#9FA9A3] leading-relaxed">
+                    Los reportes que genera la plataforma los revisa y firma un ingeniero con
+                    matrícula profesional.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="grid md:grid-cols-3 gap-5">
-              {PLANS.filter((pl) => pl.id !== "anual").map((pl) => (
-                <div key={pl.id} className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
-                  <div className="text-lg font-extrabold mb-1">{pl.name}</div>
-                  <div className="text-sm text-[#C9D6CF] mb-5">{pl.tagline}</div>
-                  <div className="text-3xl font-extrabold mb-1">{fmt(pl.price)}</div>
-                  <div className="text-xs text-[#9FA9A3] mb-5">{pl.period}</div>
-                  <ul className="space-y-2 mb-6 flex-1">
-                    {pl.features.map((f) => (
-                      <li key={f} className="text-sm flex gap-2">
-                        <span className="text-[#9FD9B6]">✓</span>{f}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href={(pl as any).link || "#contacto"}
-                    {...((pl as any).link ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="text-center py-3 rounded-lg font-bold text-sm bg-white text-[#16211B] hover:bg-[#EAF3EC] transition">
-                    Contratar
-                  </a>
-                </div>
-              ))}
+
+            <div className="max-w-2xl mx-auto mt-10 text-center">
+              <p className="text-sm text-[#9FA9A3] leading-relaxed">
+                ¿Necesita algo puntual en vez de acompañamiento continuo? Revise los{" "}
+                <button onClick={() => setTab("tienda")} className="text-[#C99A3A] font-semibold hover:underline">
+                  servicios firmados por ingeniero
+                </button>.
+              </p>
             </div>
           </div>
         )}
