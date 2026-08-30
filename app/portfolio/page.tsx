@@ -248,6 +248,12 @@ export default function PortfolioPage() {
                 </div>
               ))}
             </div>
+
+            <p className="text-center text-sm text-gray-400 mt-10 max-w-2xl mx-auto">
+              Imágenes ilustrativas de referencia. El registro fotográfico de nuestros
+              proyectos está sujeto a las condiciones de confidencialidad acordadas con
+              cada contratante.
+            </p>
           </div>
         </section>
 
