@@ -327,7 +327,7 @@ export default function EcocheckSection() {
                             Comprar
                           </a>
                         ) : (
-                          <a href="#contacto"
+                          <a href="/contact"
                             className="border border-white/25 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/10 transition">
                             Solicitar
                           </a>

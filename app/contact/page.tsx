@@ -18,10 +18,10 @@ export default function ContactPage() {
           
           <div className="relative z-10 container-custom text-center text-white">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-heading leading-tight">
-                Contacta
-                <span className="block bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  Expertos
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-heading leading-tight">
+                Hablemos de{" "}
+                <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                  su proyecto
                 </span>
               </h1>
               <p className="text-xl md:text-2xl lg:text-3xl text-gray-100 leading-relaxed max-w-3xl mx-auto">
@@ -47,78 +47,89 @@ export default function ContactPage() {
 
                 {/* Contact Cards */}
                 <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <a
+                    href="https://maps.google.com/?q=Av+Simon+Bolivar+21-44+Valledupar+Cesar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Ver ubicación de SOSING en Google Maps"
+                    className="flex items-start gap-4 group"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                       <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-dark mb-1">Dirección</h3>
-                      <p className="text-gray-600">Av Simón Bolívar 21-44</p>
-                      <p className="text-gray-600">Valledupar, Cesar, Colombia</p>
+                      <h3 className="text-lg font-semibold text-gray-dark mb-1 group-hover:text-green-700 transition-colors">Oficina</h3>
+                      <p className="text-gray-600">Av. Simón Bolívar 21-44</p>
+                      <p className="text-gray-600">Valledupar, Cesar</p>
+                      <span className="text-sm text-green-700 font-medium">Ver en el mapa →</span>
                     </div>
-                  </div>
+                  </a>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <a
+                    href="https://wa.me/573116608217?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20SOSING"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Escribir a SOSING por WhatsApp"
+                    className="flex items-start gap-4 group"
+                  >
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform" style={{ backgroundColor: "#25D366" }}>
+                      <svg viewBox="0 0 32 32" className="w-6 h-6 fill-white">
+                        <path d="M16.004 0h-.008C7.174 0 .001 7.176.001 16c0 3.5 1.128 6.742 3.045 9.377L1.05 31.29l6.117-1.955A15.9 15.9 0 0 0 16.004 32C24.83 32 32 24.822 32 16S24.83 0 16.004 0zm9.31 22.594c-.386 1.09-1.92 1.995-3.142 2.259-.836.178-1.928.32-5.604-1.203-4.702-1.948-7.73-6.727-7.966-7.037-.226-.31-1.9-2.53-1.9-4.826 0-2.296 1.166-3.425 1.636-3.905.386-.394.98-.574 1.55-.574.184 0 .35.01.498.017.47.02.706.048 1.016.79.386.93 1.326 3.226 1.438 3.462.114.236.228.556.068.866-.15.32-.282.462-.518.734-.236.272-.46.48-.696.772-.216.254-.46.526-.188.996.272.46 1.21 1.994 2.59 3.224 1.782 1.586 3.226 2.092 3.744 2.308.386.16.846.122 1.128-.178.358-.386.8-1.026 1.25-1.656.32-.452.724-.508 1.148-.348.432.15 2.718 1.28 3.188 1.514.47.236.78.35.894.546.112.198.112 1.128-.274 2.219z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-dark mb-1 group-hover:text-green-700 transition-colors">WhatsApp</h3>
+                      <p className="text-gray-600">+57 311 660 8217</p>
+                      <span className="text-sm text-green-700 font-medium">Escribir ahora →</span>
+                    </div>
+                  </a>
+
+                  <a
+                    href="tel:+573116608217"
+                    aria-label="Llamar a SOSING"
+                    className="flex items-start gap-4 group"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                       <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                         <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-dark mb-1">Teléfono</h3>
-                      <p className="text-gray-600">+57 311 6608217</p>
-                      <p className="text-gray-600">Lunes a Viernes: 8:00 AM - 6:00 PM</p>
+                      <h3 className="text-lg font-semibold text-gray-dark mb-1 group-hover:text-green-700 transition-colors">Teléfono</h3>
+                      <p className="text-gray-600">+57 311 660 8217</p>
+                      <span className="text-sm text-green-700 font-medium">Llamar ahora →</span>
                     </div>
-                  </div>
+                  </a>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <a
+                    href="mailto:comercial@sosinggroup.com"
+                    aria-label="Escribir a SOSING por correo electrónico"
+                    className="flex items-start gap-4 group"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                       <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                         <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-dark mb-1">Email</h3>
-                      <p className="text-gray-600">comercial@sosinggroup.com</p>
-                      <p className="text-gray-600">Respuesta en 24 horas</p>
+                      <h3 className="text-lg font-semibold text-gray-dark mb-1 group-hover:text-green-700 transition-colors">Correo</h3>
+                      <p className="text-gray-600 break-all">comercial@sosinggroup.com</p>
+                      <span className="text-sm text-green-700 font-medium">Enviar correo →</span>
                     </div>
-                  </div>
+                  </a>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                  <div className="flex items-start gap-4 pt-2 border-t border-gray-100">
+                    <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-4">
+                      <svg className="w-6 h-6 text-gray-500" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                       </svg>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-dark mb-1">WhatsApp</h3>
-                      <p className="text-gray-600">+57 311 6608217</p>
-                      <p className="text-gray-600">Respuesta inmediata</p>
-                      <div className="mt-2 space-y-2">
-                        <a 
-                          href="https://wa.me/573116608217" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center space-x-2 text-green-600 hover:text-green-700 font-medium transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                          </svg>
-                          <span>Enviar mensaje</span>
-                        </a>
-                        <a 
-                          href="tel:+573116608217" 
-                          className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                          </svg>
-                          <span>Llamar ahora</span>
-                        </a>
-                      </div>
+                    <div className="mt-4">
+                      <h3 className="text-lg font-semibold text-gray-dark mb-1">Horario de atención</h3>
+                      <p className="text-gray-600">Lunes a viernes: 8:00 a.m. – 6:00 p.m.</p>
+                      <p className="text-gray-600">Sábados: 8:00 a.m. – 12:00 m.</p>
                     </div>
                   </div>
                 </div>
@@ -146,6 +157,34 @@ export default function ContactPage() {
                       </svg>
                     </a>
                   </div>
+                </div>
+
+                {/* Mapa de ubicación */}
+                <div className="mt-10">
+                  <h3 className="text-lg font-semibold text-gray-dark mb-4">Cómo llegar</h3>
+                  <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+                    <iframe
+                      title="Ubicación de SOSING S.A.S. en Valledupar"
+                      src="https://www.google.com/maps?q=Av+Simon+Bolivar+21-44,+Valledupar,+Cesar,+Colombia&output=embed"
+                      width="100%"
+                      height="280"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                    />
+                  </div>
+                  <a
+                    href="https://maps.google.com/?q=Av+Simon+Bolivar+21-44+Valledupar+Cesar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 mt-3 text-sm font-semibold text-green-700 hover:text-green-800 transition-colors"
+                  >
+                    Abrir en Google Maps
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
                 </div>
               </div>
 
