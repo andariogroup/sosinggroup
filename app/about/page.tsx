@@ -298,15 +298,21 @@ export default function AboutPage() {
                 que marquen la diferencia.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link href="/contact" className="group px-10 py-5 bg-white text-green-600 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center justify-center space-x-3">
-                  <svg className="w-6 h-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="flex flex-col sm:flex-row gap-5 justify-center">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-white text-green-700 shadow-lg hover:bg-green-50 hover:scale-105 transition-all duration-300"
+                >
+                  <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                     <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                   </svg>
                   <span>Contactar Expertos</span>
                 </Link>
-                <Link href="/portfolio" className="px-10 py-5 bg-white/20 backdrop-blur-md border-2 border-white/30 text-white rounded-xl font-semibold hover:bg-white/30 transition-all duration-300">
-                  Ver Nuestro Trabajo
+                <Link
+                  href="/services"
+                  className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-base text-white border-2 border-white/70 hover:bg-white hover:text-green-700 transition-all duration-300"
+                >
+                  Ver Todos los Servicios
                 </Link>
               </div>
             </div>

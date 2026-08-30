@@ -138,7 +138,7 @@ export default function ServicesPage() {
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/images/services-hero.webp')`
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/images/services-hero.jpg')`
               }}
             ></div>
           </div>
