@@ -42,19 +42,47 @@ function firmaValida(evento: any): boolean {
   return checksum.toUpperCase() === signature.checksum.toUpperCase();
 }
 
-/* ---------- Mapa: monto pagado → producto y efecto ---------- */
-const PRODUCTOS: Record<number, { nombre: string; activaSuscripcion: boolean; meses?: number }> = {
-  19900:  { nombre: "Test de cumplimiento ambiental", activaSuscripcion: false },
-  29900:  { nombre: "Checklist ambiental restaurantes", activaSuscripcion: false },
-  39900:  { nombre: "SOSING Ambiental 24/7", activaSuscripcion: true, meses: 1 },
-  49900:  { nombre: "Diagnóstico Ambiental Express", activaSuscripcion: false },
-  69900:  { nombre: "Kit PGIRS empresarial", activaSuscripcion: false },
-  79900:  { nombre: "Kit RESPEL / Kit restaurantes", activaSuscripcion: false },
-  99900:  { nombre: "Revisión (RUA / requerimiento / matriz legal)", activaSuscripcion: false },
-  149900: { nombre: "Servicio nivel medio", activaSuscripcion: false },
-  199900: { nombre: "Servicio nivel alto", activaSuscripcion: false },
-  299900: { nombre: "Plan Empresa", activaSuscripcion: false },
+/* ---------- Mapa: link de pago → producto y efecto ----------
+   Se identifica por el ID del link de Wompi, no por el monto:
+   varios productos comparten precio y el monto no los distingue. */
+const PRODUCTOS: Record<string, { nombre: string; activaSuscripcion: boolean; meses?: number }> = {
+  // Suscripción — el único que activa la plataforma
+  "3dDrd4": { nombre: "SOSING Ambiental 24/7", activaSuscripcion: true, meses: 1 },
+
+  // Servicios firmados por ingeniero
+  "wDgbvX": { nombre: "Revisa este documento", activaSuscripcion: false },
+  "65IJJb": { nombre: "Diagnóstico Ambiental Express", activaSuscripcion: false },
+  "46mleK": { nombre: "Revisión de requerimiento ambiental", activaSuscripcion: false },
+  "Cdl91B": { nombre: "Revisión de RUA", activaSuscripcion: false },
+  "6ZpKGZ": { nombre: "Concepto ambiental express", activaSuscripcion: false },
+  "gR3mQd": { nombre: "Preparación de información para RUA", activaSuscripcion: false },
+  "nYpbJV": { nombre: "Diagnóstico de vertimientos", activaSuscripcion: false },
+  "P3EeMT": { nombre: "Revisión de PMA", activaSuscripcion: false },
+  "evBpHn": { nombre: "Diagnóstico de establecimiento", activaSuscripcion: false },
+
+  // Guías (hoy gratuitas; se conservan por si vuelven a venderse)
+  "AUzNQx": { nombre: "Checklist restaurantes", activaSuscripcion: false },
+  "ruO8DY": { nombre: "Kit ACU", activaSuscripcion: false },
+  "uif1wa": { nombre: "Kit PGIRS", activaSuscripcion: false },
+  "siVRGR": { nombre: "Kit RESPEL", activaSuscripcion: false },
+  "Am0tUT": { nombre: "Kit restaurantes", activaSuscripcion: false },
+  "o1Uaqe": { nombre: "Kit contratistas", activaSuscripcion: false },
+  "aNwE6m": { nombre: "Matriz de requisitos legales", activaSuscripcion: false },
 };
+
+/* Extrae el identificador del producto desde el evento de Wompi */
+function identificarProducto(transaccion: any) {
+  const linkId: string | undefined =
+    transaccion?.payment_link_id || transaccion?.payment_link?.id;
+
+  if (linkId && PRODUCTOS[linkId]) return PRODUCTOS[linkId];
+
+  // Si el pago no vino de un link conocido, se registra sin activar nada
+  return {
+    nombre: `Pago no identificado (${(transaccion?.amount_in_cents ?? 0) / 100})`,
+    activaSuscripcion: false,
+  };
+}
 
 export const dynamic = "force-dynamic";
 
@@ -77,13 +105,13 @@ export async function POST(request: Request) {
     const tx = evento.data.transaction;
     const montoPesos = Math.round(tx.amount_in_cents / 100);
     const email = tx.customer_email;
-    const producto = PRODUCTOS[montoPesos];
+    const producto = identificarProducto(tx);
 
     // 3. Guardar el pago siempre (aprobado o no)
     await supabaseAdmin.from("pagos").upsert({
       referencia: tx.reference,
       transaccion_id: tx.id,
-      producto: producto?.nombre ?? `Monto ${montoPesos}`,
+      producto: producto.nombre,
       monto: montoPesos,
       estado: tx.status,
       metodo_pago: tx.payment_method_type,

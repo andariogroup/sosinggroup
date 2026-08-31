@@ -97,7 +97,7 @@ export default async function PlataformaPage() {
             </div>
             <a href="https://checkout.wompi.co/l/3dDrd4" target="_blank" rel="noopener noreferrer"
               className="bg-amber-500 hover:bg-amber-600 text-amber-950 px-5 py-2.5 rounded-lg font-bold text-sm whitespace-nowrap transition">
-              Activar por $39.900/mes →
+              Activar por $79.900/mes →
             </a>
           </div>
         </div>

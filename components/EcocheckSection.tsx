@@ -26,7 +26,8 @@ const CARS: Record<string, string> = {
 
 const BUSINESS_TYPES = [
   "Restaurante", "Taller automotriz", "Hotel", "Comercio", "Industria",
-  "Estación de servicio", "Finca / agro", "Constructora", "Consultorio / salud", "Otro negocio",
+  "Estación de servicio", "Finca / agro", "Constructora", "IPS / consultorio / laboratorio",
+  "Veterinaria", "Estética / tatuajes", "Funeraria", "Otro negocio",
 ];
 
 type Q = { id: string; text: string; tag: string; inverse?: boolean };
@@ -41,9 +42,10 @@ const QUESTIONS: Q[] = [
   { id: "q8", text: "¿Has recibido alguna vez una visita o requerimiento de la autoridad ambiental?", tag: "Antecedentes" },
   { id: "q9", text: "¿Cuentas con algún documento ambiental vigente (PMA, concepto, permiso)?", tag: "Documentación", inverse: true },
   { id: "q10", text: "¿Sabes con certeza qué trámites ambientales aplican a tu negocio?", tag: "Conocimiento", inverse: true },
+  { id: "q11", text: "¿Generas residuos biosanitarios, cortopunzantes o anatomopatológicos?", tag: "PGIRASA — sector salud" },
 ];
 
-type Item = { id: string; name: string; desc: string; price: number; cat: string; link?: string };
+type Item = { id: string; name: string; desc: string; price: number; cat: string; link?: string; desde?: boolean; plazo?: string; cotiza?: boolean };
 
 /* ============================================================
    RECURSOS GRATUITOS — el gancho.
@@ -73,6 +75,18 @@ const SERVICIOS: Item[] = [
   { id: "rev-rua", name: "Revisión de RUA", desc: "Revisión técnica de su Registro Único Ambiental antes de radicar.", price: 99900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/Cdl91B" },
   { id: "prep-rua", name: "Preparación de información para RUA", desc: "Consolidamos y organizamos su información lista para radicar.", price: 149900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/gR3mQd" },
   { id: "rev-pma", name: "Revisión de Plan de Manejo Ambiental", desc: "Revisión de suficiencia técnica de su PMA.", price: 199900, cat: "Trámites y conceptos", link: "https://checkout.wompi.co/l/P3EeMT" },
+
+  /* --- Formulación de documentos técnicos: se cotizan según alcance --- */
+  { id: "form-psmv", name: "Plan de Saneamiento Básico", desc: "Formulación completa del plan para su establecimiento: diagnóstico, programas de manejo, cronograma e indicadores. Incluye visita técnica.", price: 600000, desde: true, plazo: "8 a 12 días hábiles", cotiza: true, cat: "Formulación de documentos" },
+  { id: "form-pgirs", name: "Plan de Gestión Integral de Residuos Sólidos", desc: "PGIRS empresarial formulado según su actividad: caracterización de residuos, programas, metas de aprovechamiento y seguimiento.", price: 800000, desde: true, plazo: "7 días hábiles", cotiza: true, cat: "Formulación de documentos" },
+  { id: "form-respel", name: "Plan de Gestión Integral de RESPEL", desc: "Plan de manejo de residuos peligrosos con categorización de generador, rutas internas, contingencias y formatos de control.", price: 700000, desde: true, plazo: "7 a 10 días hábiles", cotiza: true, cat: "Formulación de documentos" },
+  { id: "form-pgirasa", name: "PGIRASA — Sector salud", desc: "Plan de Gestión Integral de Residuos Generados en la Atención en Salud. Incluye formulación, capacitación al personal y acompañamiento en la visita de la Secretaría de Salud. Para IPS, consultorios, laboratorios, veterinarias, estética y funerarias.", price: 1200000, desde: true, plazo: "10 a 15 días hábiles", cotiza: true, cat: "Formulación de documentos" },
+  { id: "form-pma", name: "Plan de Manejo Ambiental", desc: "Formulación de PMA para proyectos de infraestructura y obra civil. El alcance y el valor dependen del tipo de proyecto, su magnitud y localización.", price: 0, cotiza: true, plazo: "según proyecto", cat: "Formulación de documentos" },
+
+  /* --- Diseño y topografía --- */
+  { id: "dis-hidro", name: "Diseño de redes hidrosanitarias", desc: "Cálculo y diseño de redes de acueducto, sanitarias y de aguas lluvias. Incluye memorias de cálculo, planos y especificaciones técnicas firmadas.", price: 1500000, desde: true, plazo: "10 a 20 días hábiles", cotiza: true, cat: "Diseño y topografía" },
+  { id: "top-predial", name: "Levantamiento y plano predial", desc: "Levantamiento topográfico con georreferenciación, cálculo de área y linderos. Plano en formato exigido por la oficina de catastro o el IGAC.", price: 800000, desde: true, plazo: "5 a 10 días hábiles", cotiza: true, cat: "Diseño y topografía" },
+  { id: "cartografia", name: "Planos cartográficos y georreferenciación", desc: "Elaboración de cartografía temática para estudios ambientales y proyectos: localización, uso del suelo, áreas de influencia y componentes del proyecto.", price: 600000, desde: true, plazo: "5 a 12 días hábiles", cotiza: true, cat: "Diseño y topografía" },
 ];
 
 const fmt = (n: number) => "$" + n.toLocaleString("es-CO");
@@ -104,7 +118,7 @@ export default function EcocheckSection() {
     const positive = q.inverse ? v === "no" : v === "si";
     if (positive) { score++; riesgos.push(q.tag); }
   });
-  const level: "rojo" | "amarillo" | "verde" = score >= 6 ? "rojo" : score >= 3 ? "amarillo" : "verde";
+  const level: "rojo" | "amarillo" | "verde" = score >= 7 ? "rojo" : score >= 4 ? "amarillo" : "verde";
 
   const answer = (v: string) => {
     const q = QUESTIONS[qIndex];
@@ -299,7 +313,7 @@ export default function EcocheckSection() {
                     le avisa antes de cada vencimiento y genera sus informes firmados.
                   </p>
                   <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-3xl font-extrabold text-[#1F5C38]">{fmt(39900)}</span>
+                    <span className="text-3xl font-extrabold text-[#1F5C38]">{fmt(79900)}</span>
                     <span className="text-sm text-[#5C6A62]">/mes</span>
                   </div>
                   <button onClick={() => setTab("planes")}
@@ -332,9 +346,14 @@ export default function EcocheckSection() {
                 autoridad ambiental. Aquí no vendemos información: entregamos criterio técnico
                 con responsabilidad profesional detrás.
               </p>
+              <p className="text-sm text-[#9FA9A3] leading-relaxed mt-4">
+                Los servicios de formulación, diseño y topografía se cotizan según el alcance
+                de cada caso. Escríbanos con los datos de su proyecto y le confirmamos valor
+                y plazo el mismo día.
+              </p>
             </div>
 
-            {["Respuesta a la autoridad", "Diagnósticos con firma", "Trámites y conceptos"].map((cat) => (
+            {["Formulación de documentos", "Diseño y topografía", "Respuesta a la autoridad", "Diagnósticos con firma", "Trámites y conceptos"].map((cat) => (
               <div key={cat} className="mb-10">
                 <div className="text-[#9FD9B6] text-xs font-bold tracking-[1.5px] uppercase mb-4">
                   {cat}
@@ -343,13 +362,39 @@ export default function EcocheckSection() {
                   {SERVICIOS.filter((s) => s.cat === cat).map((s) => (
                     <div key={s.id} className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col hover:border-[#C99A3A]/40 transition">
                       <div className="font-bold mb-2 leading-snug">{s.name}</div>
-                      <p className="text-sm text-[#9FA9A3] leading-relaxed flex-1 mb-4">{s.desc}</p>
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-xl font-extrabold text-[#C99A3A]">{fmt(s.price)}</span>
-                        <a href={s.link} target="_blank" rel="noopener noreferrer"
-                          className="bg-[#C99A3A] text-[#241804] px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#B4872F] transition">
-                          Solicitar
-                        </a>
+                      <p className="text-sm text-[#9FA9A3] leading-relaxed flex-1 mb-3">{s.desc}</p>
+                      {s.plazo && (
+                        <div className="flex items-center gap-1.5 text-xs text-[#9FD9B6] mb-3">
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Entrega: {s.plazo}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
+                        {s.price > 0 ? (
+                          <span className="text-xl font-extrabold text-[#C99A3A]">
+                            {s.desde && <span className="text-xs font-semibold text-[#9FA9A3] mr-1">desde</span>}
+                            {fmt(s.price)}
+                          </span>
+                        ) : (
+                          <span className="text-sm font-semibold text-[#9FA9A3]">Según proyecto</span>
+                        )}
+                        {s.cotiza ? (
+                          <a
+                            href={`https://wa.me/573116608217?text=${encodeURIComponent(
+                              `Hola, vengo de sosinggroup.com. Quisiera cotizar el servicio de ${s.name} para mi empresa.`
+                            )}`}
+                            target="_blank" rel="noopener noreferrer"
+                            className="bg-[#C99A3A] text-[#241804] px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#B4872F] transition">
+                            Cotizar
+                          </a>
+                        ) : (
+                          <a href={s.link} target="_blank" rel="noopener noreferrer"
+                            className="bg-[#C99A3A] text-[#241804] px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#B4872F] transition">
+                            Solicitar
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -435,12 +480,17 @@ export default function EcocheckSection() {
                     sus informes con la firma de un ingeniero.
                   </p>
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-extrabold">{fmt(39900)}</span>
+                    <span className="text-5xl font-extrabold">{fmt(79900)}</span>
                     <span className="text-[#9FD9B6]">/mes</span>
                   </div>
-                  <p className="text-xs text-[#9FA9A3] mb-6">
-                    Renovación mensual · le enviamos el enlace cada mes · sin permanencia
-                  </p>
+                  <div className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 mb-6">
+                    <p className="text-xs text-[#C9D6CF] leading-relaxed">
+                      <strong className="text-white">Cómo funciona el cobro:</strong> usted paga el primer mes
+                      al activar. Cada mes le enviamos el enlace para renovar. No guardamos su tarjeta
+                      ni le hacemos cobros automáticos. Si algún mes no desea continuar, simplemente
+                      no renueva.
+                    </p>
+                  </div>
                   <a href="https://checkout.wompi.co/l/3dDrd4" target="_blank" rel="noopener noreferrer"
                     className="inline-block bg-[#C99A3A] text-[#241804] px-8 py-4 rounded-lg font-extrabold hover:bg-[#B4872F] transition">
                     Activar mi plataforma →

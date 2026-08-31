@@ -84,7 +84,7 @@ const organizationSchema = {
           description:
             "Plataforma de cumplimiento ambiental con control de RESPEL, residuos sólidos, ACU, RCD y alertas de vencimientos.",
         },
-        price: "39900",
+        price: "79900",
         priceCurrency: "COP",
       },
       {
