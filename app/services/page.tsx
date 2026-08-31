@@ -49,7 +49,7 @@ const services = [
     title: "Gestión de Residuos",
     description: "Soluciones integrales para la gestión sostenible de residuos sólidos y peligrosos.",
     icon: "♻️",
-    image: "/images/servicios/gestion-residuos.webp",
+    image: "/images/trampa-grasas.jpg",
     features: [
       "Diagnóstico y Caracterización",
       "Planes de Gestión Integral (PGIRS)",
@@ -69,7 +69,7 @@ const services = [
     title: "Ingeniería Civil",
     description: "Diseño y supervisión de obras civiles con estándares internacionales de calidad.",
     icon: "🏗️",
-    image: "/images/servicios/ingenieria-civil.webp",
+    image: "/images/equipo-muro-gaviones.jpg",
     features: [
       "Diseño Estructural y Arquitectónico",
       "Infraestructura Vial y Transporte",
@@ -89,7 +89,7 @@ const services = [
     title: "Consultoría Técnica",
     description: "Asesoría experta y estudios técnicos especializados para toma de decisiones informadas.",
     icon: "📊",
-    image: "/images/equipo-osmosis.jpg",
+    image: "/images/toma-muestras.jpg",
     features: [
       "Estudios de Prefactibilidad y Factibilidad",
       "Informes Técnicos y Peritajes",
@@ -109,7 +109,7 @@ const services = [
     title: "Interventoría y Supervisión",
     description: "Control técnico y seguimiento riguroso de obras y proyectos para garantizar calidad.",
     icon: "👁️",
-    image: "/images/filtros-tableros.jpg",
+    image: "/images/equipo-inspeccion-ptap.jpg",
     features: [
       "Interventoría Técnica de Obras",
       "Supervisión de Construcción",

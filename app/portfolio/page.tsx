@@ -5,74 +5,74 @@ import Link from "next/link";
 const projects = [
   {
     id: 1,
-    title: "Reservorio y PTAP Anaripa",
-    category: "Agua Potable",
-    location: "La Guajira, Colombia",
-    image: "/images/proyecto-ptap-tanque.jpg",
-    description: "Construcción de reservorio y planta de tratamiento de agua potable para abastecimiento de comunidad rural en La Guajira.",
-    features: ["Tanque de almacenamiento", "Sistema de potabilización", "Obra civil complementaria", "Supervisión técnica"],
+    title: "Obras de protección de ribera",
+    category: "Ingeniería Civil",
+    location: "Cesar, Colombia",
+    image: "/images/gaviones-terminado.jpg",
+    description: "Construcción de muros en gaviones para control de erosión y protección de márgenes, con obra de drenaje asociada.",
+    features: ["Muros en gaviones", "Box culvert", "Control de erosión", "Manejo ambiental de obra"],
     year: "2026",
-    client: "Proyecto WASH",
-    status: "En ejecución"
+    client: "Sector público",
+    status: "Completado"
   },
   {
     id: 2,
-    title: "Obra civil — Reservorio Anaripa",
-    category: "Ingeniería Civil",
+    title: "Potabilización con energía solar",
+    category: "Agua Potable",
     location: "La Guajira, Colombia",
-    image: "/images/proyecto-excavacion.jpg",
-    description: "Excavación, cimentación y estructura para la instalación del sistema de almacenamiento de agua.",
-    features: ["Movimiento de tierra", "Cimentación", "Estructura en concreto", "Control de calidad"],
+    image: "/images/planta-osmosis.jpg",
+    description: "Planta de tratamiento con sistema de ósmosis inversa y suministro fotovoltaico para comunidad rural.",
+    features: ["Ósmosis inversa", "Sistema fotovoltaico", "Tanques de almacenamiento", "Puesta en marcha"],
     year: "2026",
     client: "Proyecto WASH",
-    status: "En ejecución"
+    status: "Completado"
   },
   {
     id: 3,
-    title: "Caseta de operación — PTAP Anaripa",
-    category: "Ingeniería Civil",
-    location: "La Guajira, Colombia",
-    image: "/images/proyecto-ptap-caseta.jpg",
-    description: "Construcción de caseta para equipos de operación y control del sistema de tratamiento.",
-    features: ["Mampostería estructural", "Ventilación técnica", "Protección de equipos", "Acabados"],
+    title: "Supervisión ambiental de obra",
+    category: "Interventoría",
+    location: "Cesar, Colombia",
+    image: "/images/equipo-obra-gaviones.jpg",
+    description: "Seguimiento ambiental durante la ejecución: control de RCD, manejo de aguas, protección de cauce y verificación de permisos.",
+    features: ["Bitácora ambiental", "Control de RCD", "Registro fotográfico", "Informes de avance"],
     year: "2026",
-    client: "Proyecto WASH",
+    client: "Sector público",
     status: "En ejecución"
   },
   {
     id: 4,
-    title: "Rehabilitación WASH — IE Kasutalain",
-    category: "Saneamiento Básico",
-    location: "Maicao, La Guajira",
-    image: "/images/proyecto-kasutalain.jpg",
-    description: "Rehabilitación de infraestructura de agua y saneamiento en institución educativa rural.",
-    features: ["Caseta de bombeo", "Red hidráulica", "Unidades sanitarias", "Supervisión de obra"],
-    year: "2026",
-    client: "Institución educativa",
+    title: "Caracterización de vertimientos",
+    category: "Consultoría Ambiental",
+    location: "Cesar, Colombia",
+    image: "/images/toma-muestras.jpg",
+    description: "Toma de muestras y caracterización de aguas residuales con cadena de custodia, para trámites ante la autoridad ambiental.",
+    features: ["Muestreo con cadena de custodia", "Análisis de laboratorio", "Interpretación de resultados", "Informe técnico"],
+    year: "2024",
+    client: "Sector privado",
     status: "Completado"
   },
   {
     id: 5,
-    title: "Sistema de bombeo — IE Kasutalain",
-    category: "Agua Potable",
-    location: "Maicao, La Guajira",
-    image: "/images/proyecto-bombeo.jpg",
-    description: "Instalación y puesta en marcha de sistema de bombeo con controlador para suministro de agua.",
-    features: ["Electrobomba", "Controlador de operación", "Red de distribución", "Pruebas de funcionamiento"],
-    year: "2026",
-    client: "Institución educativa",
+    title: "Manejo de trampas de grasas",
+    category: "Saneamiento Básico",
+    location: "Cesar, Colombia",
+    image: "/images/trampa-grasas.jpg",
+    description: "Evaluación y control de sistemas de retención de grasas en estaciones de servicio y establecimientos comerciales.",
+    features: ["Inspección de sistemas", "Control de mantenimiento", "Registro de disposición", "Acompañamiento técnico"],
+    year: "2024",
+    client: "Estaciones de servicio",
     status: "Completado"
   },
   {
     id: 6,
-    title: "Interventoría de infraestructura WASH",
-    category: "Interventoría",
-    location: "Maicao, La Guajira",
-    image: "/images/proyecto-ptap-anaripa.jpg",
-    description: "Supervisión técnica, administrativa y financiera de contratos de rehabilitación de infraestructura de agua y saneamiento.",
-    features: ["Verificación en campo", "Control de avance", "Informes técnicos", "Registro fotográfico"],
+    title: "Manejo forestal en obra",
+    category: "Gestión Ambiental",
+    location: "Cesar, Colombia",
+    image: "/images/tala-manejo-forestal.jpg",
+    description: "Gestión del componente forestal en proyectos de infraestructura: inventario, permisos y seguimiento a la intervención.",
+    features: ["Inventario forestal", "Trámite de permisos", "Supervisión de intervención", "Compensación"],
     year: "2026",
-    client: "Cooperación internacional",
+    client: "Sector público",
     status: "En ejecución"
   }
 ];
@@ -250,9 +250,9 @@ export default function PortfolioPage() {
             </div>
 
             <p className="text-center text-sm text-gray-400 mt-10 max-w-2xl mx-auto">
-              Imágenes ilustrativas de referencia. El registro fotográfico de nuestros
-              proyectos está sujeto a las condiciones de confidencialidad acordadas con
-              cada contratante.
+              Registro fotográfico de proyectos ejecutados por SOSING S.A.S. Los nombres
+              de contratantes se omiten conforme a las condiciones de confidencialidad
+              acordadas en cada contrato.
             </p>
           </div>
         </section>
