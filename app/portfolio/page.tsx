@@ -91,8 +91,11 @@ export default function PortfolioPage() {
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/images/portfolio-hero.jpg')`
-              }}
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/images/portfolio-hero.jpg')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+}}
             ></div>
           </div>
           
