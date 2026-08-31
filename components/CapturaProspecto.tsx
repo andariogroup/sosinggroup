@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { evento } from "./MetaPixel";
 
 /* ============================================================
    Captura de prospecto tras el diagnóstico
@@ -81,6 +82,7 @@ export default function CapturaProspecto({
       window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`, "_blank");
     }
 
+    evento("Lead", { content_name: "Diagnóstico ECOCHECK", value: 0, currency: "COP" });
     setEstado("listo");
   };
 

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import BotonWhatsApp from "@/components/BotonWhatsApp";
+import MetaPixel from "@/components/MetaPixel";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -231,6 +232,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {children}
+        <MetaPixel />
         <BotonWhatsApp />
         <Analytics />
         <SpeedInsights />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CapturaProspecto from "./CapturaProspecto";
+import { evento, eventoPersonalizado } from "./MetaPixel";
 
 /* =========================================================
    SOSING ECOCHECK — Sección para sosinggroup.com
@@ -122,9 +123,16 @@ export default function EcocheckSection() {
 
   const answer = (v: string) => {
     const q = QUESTIONS[qIndex];
+    if (qIndex === 0) eventoPersonalizado("DiagnosticoIniciado");
     setAnswers((a) => ({ ...a, [q.id]: v }));
     if (qIndex < QUESTIONS.length - 1) setQIndex(qIndex + 1);
-    else setStep("resultado");
+    else {
+      setStep("resultado");
+      eventoPersonalizado("DiagnosticoCompletado", {
+        tipo_negocio: tipo,
+        departamento: depto,
+      });
+    }
   };
 
   const reset = () => { setStep("intro"); setTipo(""); setDepto(""); setAnswers({}); setQIndex(0); };
