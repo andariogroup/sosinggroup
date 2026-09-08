@@ -42,14 +42,23 @@ type Q = {
 };
 const QUESTIONS: Q[] = [
   { id: "q1", text: "¿Generas residuos peligrosos (aceites, químicos, pilas, luminarias)?", tag: "RESPEL" },
-  { id: "q1b", text: "¿Aproximadamente cuánto pesan esos residuos peligrosos al mes?",
-    tag: "Categoría de generador", soloSi: { id: "q1", valor: "si" },
+  { id: "q1b", text: "En promedio, ¿cuántos kilogramos de residuos peligrosos genera al mes?",
+    tag: "Generación declarada", soloSi: { id: "q1", valor: "si" },
     opciones: [
-      { valor: "micro",   texto: "Menos de 10 kg" },
-      { valor: "pequeño", texto: "Entre 10 y 100 kg" },
+      { valor: "bajo",    texto: "Menos de 10 kg" },
+      { valor: "pequeno", texto: "Entre 10 y 100 kg" },
       { valor: "mediano", texto: "Entre 100 y 1.000 kg" },
-      { valor: "grande",  texto: "Más de 1.000 kg" },
+      { valor: "gran",    texto: "Más de 1.000 kg" },
       { valor: "no_se",   texto: "No sé cuánto genero" },
+    ] },
+  { id: "q1c", text: "¿Cuántos meses de registros de generación tiene disponibles?",
+    tag: "Certeza de la información", soloSi: { id: "q1", valor: "si" },
+    opciones: [
+      { valor: "1",     texto: "1 mes" },
+      { valor: "2_3",   texto: "2 a 3 meses" },
+      { valor: "4_5",   texto: "4 a 5 meses" },
+      { valor: "6_mas", texto: "6 meses o más" },
+      { valor: "sin",   texto: "No tengo registros" },
     ] },
   { id: "q2", text: "¿Usas o generas Aceite de Cocina Usado (ACU)?", tag: "ACU" },
   { id: "q3", text: "¿A dónde van las aguas residuales de tu negocio?",
@@ -148,10 +157,10 @@ export default function EcocheckSection() {
     if (!v) return;
     if (q.opciones) {
       // Las preguntas de rango puntúan según la respuesta, no por sí/no
-      if (q.id === "q1b" && ["mediano", "grande"].includes(v)) {
+      if (q.id === "q1b" && ["mediano", "gran"].includes(v)) {
         score += 2; riesgos.push(q.tag);
       } else if (q.id === "q1b" && v === "no_se") {
-        score++; riesgos.push("Categoría de generador sin determinar");
+        score++; riesgos.push("Generación no cuantificada");
       } else if (q.id === "q3" && ["fuente", "pozo"].includes(v)) {
         score += 2; riesgos.push("Vertimiento fuera de alcantarillado");
       } else if (q.id === "q3" && v === "alcantarillado") {
@@ -170,16 +179,21 @@ export default function EcocheckSection() {
     : "verde";
 
   /* Datos derivados para el resultado accionable */
-  const categoriaRespel = (answers["q1"] === "si" ? (answers["q1b"] || "no_se") : "no_genera") as any;
-  const vierteAlAlcantarillado =
-    answers["q3"] === "alcantarillado" ? true
-    : ["fuente", "pozo"].includes(answers["q3"] || "") ? false
-    : null;
+  const rangoRespel = answers["q1"] === "si" ? (answers["q1b"] || "no_se") : "no_genera";
+  const mesesRegistro = answers["q1c"] || "";
 
   const answer = (v: string) => {
     const q = aplicables[qIndex];
     if (qIndex === 0) eventoPersonalizado("DiagnosticoIniciado");
-    const nuevas = { ...answers, [q.id]: v };
+    let nuevas: Record<string, string> = { ...answers, [q.id]: v };
+
+    // Al cambiar una pregunta padre, se limpian sus dependientes
+    const dependientes = QUESTIONS.filter((x) => x.soloSi?.id === q.id);
+    if (dependientes.length > 0 && v !== q.soloSi?.valor) {
+      dependientes.forEach((d) => {
+        if (nuevas[d.id] !== undefined && v !== d.soloSi!.valor) delete nuevas[d.id];
+      });
+    }
     setAnswers(nuevas);
 
     // Recalcular aplicables con la respuesta recién dada
@@ -348,12 +362,11 @@ export default function EcocheckSection() {
                   <ResultadoAccionable
                     autoridad={CARS[depto] || "su autoridad ambiental"}
                     departamento={depto}
-                    tipoNegocio={tipo}
-                    categoriaRespel={categoriaRespel}
+                    generaRespel={answers["q1"] === "si"}
+                    rangoRespel={rangoRespel}
+                    mesesRegistro={mesesRegistro}
                     generaACU={answers["q2"] === "si"}
-                    generaResiduos={answers["q5"] === "si"}
-                    vierteAlAlcantarillado={vierteAlAlcantarillado}
-                    esSalud={answers["q11"] === "si"}
+                    destinoVertimiento={answers["q3"] || ""}
                   />
                 </div>
 

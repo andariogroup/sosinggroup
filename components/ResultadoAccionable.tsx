@@ -2,88 +2,155 @@
 
 import { useState } from "react";
 import {
-  datosAutoridad, CATEGORIA_RESPEL, RADICACION, POSCONSUMO,
-  accionesACU, accionesRespel, accionesResiduos,
-  accionesVertimientos, accionesPGIRASA,
-  type Accion, type CategoriaRespel,
-} from "@/lib/ecocheck-acciones";
+  datosAutoridad, clasificarRespel, obligacionesACU, obligacionesRespel,
+  obligacionesVertimientos, NATURALEZA_META, METODO_RESPEL,
+  RADICACION, POSCONSUMO,
+  type Obligacion, type ResultadoCategoria,
+} from "@/lib/ecocheck-reglas";
 
 /* ══════════════════════════════════════════════════════════════
-   Resultado accionable del diagnóstico
+   Resultado con trazabilidad
 
-   No describe el riesgo: dice qué hacer, ante quién y cómo.
+   Cada salida declara su naturaleza, su norma, su artículo,
+   su fuente y su fecha de verificación.
    ══════════════════════════════════════════════════════════════ */
 
 type Props = {
   autoridad: string;
   departamento: string;
-  tipoNegocio: string;
-  categoriaRespel: CategoriaRespel | "no_se";
+  generaRespel: boolean;
+  rangoRespel: string;
+  mesesRegistro: string;
   generaACU: boolean;
-  generaResiduos: boolean;
-  vierteAlAlcantarillado: boolean | null;
-  esSalud: boolean;
+  destinoVertimiento: string;
 };
 
 const C = {
   tinta: "#16211B", verde: "#1F5C38", mint: "#9FD9B6",
   hueso: "#F4F6F2", linea: "#DDE3DC", gris: "#68756D",
   ambar: "#B4872F", ambarFondo: "#FBF3E2",
-  rojo: "#A8402C", rojoFondo: "#FAEDE9", verdeFondo: "#EDF4EF",
+  rojo: "#A8402C", verdeFondo: "#EDF4EF", morado: "#6B4C8A",
 };
 
 export default function ResultadoAccionable(p: Props) {
   const [abierta, setAbierta] = useState<string | null>(null);
+  const [verMetodo, setVerMetodo] = useState(false);
+
   const aut = datosAutoridad(p.autoridad);
 
-  /* Acciones derivadas de lo que respondió */
-  const acciones: Accion[] = [
-    ...(p.generaACU ? accionesACU() : []),
-    ...(p.categoriaRespel !== "no_se"
-      ? accionesRespel(p.categoriaRespel as CategoriaRespel)
-      : []),
-    ...(p.generaResiduos ? accionesResiduos() : []),
-    ...(p.vierteAlAlcantarillado !== null
-      ? accionesVertimientos(p.vierteAlAlcantarillado)
-      : []),
-    ...(p.esSalud ? accionesPGIRASA() : []),
+  const cat: ResultadoCategoria = clasificarRespel(
+    p.generaRespel ? p.rangoRespel : "no_genera",
+    p.mesesRegistro
+  );
+
+  const obligaciones: Obligacion[] = [
+    ...(p.generaRespel ? obligacionesRespel(cat) : []),
+    ...(p.generaACU ? obligacionesACU() : []),
+    ...(p.destinoVertimiento ? obligacionesVertimientos(p.destinoVertimiento) : []),
   ];
 
-  const inmediatas = acciones.filter((a) => a.urgencia === "inmediata");
-  const corto = acciones.filter((a) => a.urgencia === "corto");
-  const medio = acciones.filter((a) => a.urgencia === "medio");
+  const verificadas = obligaciones.filter((o) => o.naturaleza === "obligacion_verificada");
+  const porVerificar = obligaciones.filter((o) => o.naturaleza === "requiere_verificacion");
 
-  const categoria =
-    p.categoriaRespel !== "no_se" && p.categoriaRespel !== "no_genera"
-      ? CATEGORIA_RESPEL[p.categoriaRespel]
-      : null;
+  const inmediatas = obligaciones.filter((o) => o.urgencia === "inmediata");
+  const corto = obligaciones.filter((o) => o.urgencia === "corto");
+  const medio = obligaciones.filter((o) => o.urgencia === "medio");
 
   return (
     <div className="space-y-4">
 
-      {/* ── Su situación en una frase ── */}
+      {/* ══ Situación ══ */}
       <div style={{ background: C.tinta, borderRadius: 12, padding: "20px 22px", color: "#fff" }}>
         <div style={{ fontSize: 12, color: C.mint, marginBottom: 6 }}>Su situación</div>
 
-        {categoria && (
-          <div style={{ fontSize: 21, fontWeight: 700, marginBottom: 8 }}>
-            Usted es {categoria.nombre.toLowerCase()} de residuos peligrosos
-            <span style={{ fontSize: 13, fontWeight: 400, color: "#9FA9A3", marginLeft: 8 }}>
-              {categoria.nota}
-            </span>
+        {p.generaRespel && (
+          <div style={{ marginBottom: 12 }}>
+            {cat.estado === "NO_DETERMINABLE" ? (
+              <>
+                <div style={{ fontSize: 19, fontWeight: 700, marginBottom: 6 }}>
+                  Categoría de generador no determinable
+                </div>
+                <div style={{ fontSize: 14, lineHeight: 1.6, color: "#C9D6CF" }}>
+                  {cat.mensaje}
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: 19, fontWeight: 700, marginBottom: 4 }}>
+                  {cat.nombre}
+                  <span style={{
+                    fontSize: 11, fontWeight: 600, marginLeft: 10, padding: "3px 9px",
+                    borderRadius: 4, background: "rgba(255,255,255,.15)", verticalAlign: "middle",
+                  }}>
+                    ESTIMADA
+                  </span>
+                </div>
+                {cat.detalle && (
+                  <div style={{ fontSize: 12.5, color: "#9FA9A3", marginBottom: 6 }}>
+                    {cat.detalle}
+                  </div>
+                )}
+                <div style={{ fontSize: 14, lineHeight: 1.6, color: "#C9D6CF" }}>
+                  {cat.mensaje}
+                </div>
+              </>
+            )}
+
+            <button
+              onClick={() => setVerMetodo(!verMetodo)}
+              style={{
+                marginTop: 10, background: "none", border: "none", padding: 0,
+                color: C.mint, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                fontFamily: "inherit", textDecoration: "underline",
+              }}
+            >
+              ¿Por qué ECOCHECK dice esto?
+            </button>
+
+            {verMetodo && (
+              <div style={{
+                marginTop: 12, padding: "14px 16px", borderRadius: 8,
+                background: "rgba(255,255,255,.07)", fontSize: 13, lineHeight: 1.65,
+              }}>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>{METODO_RESPEL.titulo}</div>
+                <p style={{ margin: "0 0 10px", color: "#C9D6CF" }}>{METODO_RESPEL.texto}</p>
+
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>Umbrales de la norma</div>
+                <ul style={{ margin: "0 0 10px", paddingLeft: 18, color: "#C9D6CF" }}>
+                  {METODO_RESPEL.umbrales.map((u) => <li key={u}>{u}</li>)}
+                </ul>
+
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>Cómo obtener su categoría real</div>
+                <ol style={{ margin: "0 0 10px", paddingLeft: 18, color: "#C9D6CF" }}>
+                  {METODO_RESPEL.comoObtenerla.map((s) => <li key={s}>{s}</li>)}
+                </ol>
+
+                <div style={{ fontSize: 12, color: "#8A9188", paddingTop: 8,
+                              borderTop: "1px solid rgba(255,255,255,.12)" }}>
+                  {METODO_RESPEL.fuente.norma} · {METODO_RESPEL.fuente.articulo}<br />
+                  Verificado el {METODO_RESPEL.fuente.fechaVerificacion} ·
+                  fuente nivel {METODO_RESPEL.fuente.nivelFuente} ·
+                  confianza {METODO_RESPEL.fuente.confianza}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        <div style={{ fontSize: 15, lineHeight: 1.6, color: "#C9D6CF" }}>
+        <div style={{ fontSize: 14, lineHeight: 1.6, color: "#C9D6CF",
+                      paddingTop: p.generaRespel ? 12 : 0,
+                      borderTop: p.generaRespel ? "1px solid rgba(255,255,255,.12)" : "none" }}>
           Su autoridad competente es <strong style={{ color: "#fff" }}>{aut.sigla}</strong>
-          {p.departamento && ` para ${p.departamento}`}. Tiene{" "}
-          <strong style={{ color: "#fff" }}>{acciones.length} obligaciones</strong> identificadas,
-          de las cuales <strong style={{ color: C.mint }}>{inmediatas.length}</strong> conviene
-          atender de inmediato.
+          {p.departamento && ` para ${p.departamento}`}. Se identifican{" "}
+          <strong style={{ color: "#fff" }}>{verificadas.length} obligaciones verificadas</strong>
+          {porVerificar.length > 0 && (
+            <> y <strong style={{ color: "#fff" }}>{porVerificar.length} puntos que requieren
+            verificación</strong></>
+          )}.
         </div>
       </div>
 
-      {/* ── Datos de la autoridad ── */}
+      {/* ══ Autoridad ══ */}
       <div style={{ background: "#fff", border: `1px solid ${C.linea}`, borderRadius: 12, padding: "18px 20px" }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.gris, marginBottom: 10 }}>
           Dónde debe responder
@@ -93,27 +160,31 @@ export default function ResultadoAccionable(p: Props) {
         </div>
 
         {aut.verificado ? (
-          <div style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.7 }}>
-            {aut.direccion && <div>{aut.direccion}</div>}
-            {aut.telefono && (
-              <div>
-                Teléfono {aut.telefono}
-                {aut.lineaGratuita && ` · línea gratuita ${aut.lineaGratuita}`}
-              </div>
-            )}
-            {aut.horario && <div>{aut.horario}</div>}
-          </div>
+          <>
+            <div style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.7 }}>
+              {aut.direccion && <div>{aut.direccion}</div>}
+              {aut.telefono && (
+                <div>
+                  Teléfono {aut.telefono}
+                  {aut.lineaGratuita && ` · línea gratuita ${aut.lineaGratuita}`}
+                </div>
+              )}
+              {aut.horario && <div>{aut.horario}</div>}
+            </div>
+            <div style={{ fontSize: 11.5, color: "#8A9188", marginTop: 8 }}>
+              Fuente: {aut.fuenteDatos} · verificado {aut.fechaVerificacion} ·
+              nivel {aut.nivelFuente}
+            </div>
+          </>
         ) : (
           <div style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.6 }}>
-            Consulte los datos de contacto y horarios en{" "}
-            <strong>{aut.web}</strong>.
+            Información específica de esta autoridad pendiente de verificación.
+            {aut.web && <> Consulte en <strong>{aut.web}</strong>.</>}
           </div>
         )}
 
         <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${C.hueso}` }}>
-          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
-            Cómo se radica
-          </div>
+          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Cómo se radica</div>
           <div style={{ fontSize: 13, color: C.gris, lineHeight: 1.6 }}>
             La mayoría de trámites se gestionan por <strong>{RADICACION.plataforma}</strong>:{" "}
             {RADICACION.url}
@@ -127,52 +198,58 @@ export default function ResultadoAccionable(p: Props) {
         </div>
       </div>
 
-      {/* ── Plan de acción ── */}
+      {/* ══ Obligaciones por urgencia ══ */}
       {inmediatas.length > 0 && (
-        <Bloque
-          titulo="Empiece por aquí"
-          subtitulo="Obligaciones exigibles desde ya"
-          color={C.rojo}
-          fondo={C.rojoFondo}
-          acciones={inmediatas}
-          abierta={abierta}
-          setAbierta={setAbierta}
-        />
+        <Bloque titulo="Atender de inmediato" acciones={inmediatas}
+          abierta={abierta} setAbierta={setAbierta} />
       )}
-
       {corto.length > 0 && (
-        <Bloque
-          titulo="En las próximas semanas"
-          subtitulo="Conviene resolverlo pronto"
-          color={C.ambar}
-          fondo={C.ambarFondo}
-          acciones={corto}
-          abierta={abierta}
-          setAbierta={setAbierta}
-        />
+        <Bloque titulo="En las próximas semanas" acciones={corto}
+          abierta={abierta} setAbierta={setAbierta} />
       )}
-
       {medio.length > 0 && (
-        <Bloque
-          titulo="Para el mediano plazo"
-          subtitulo="Planifíquelo con tiempo"
-          color={C.verde}
-          fondo={C.verdeFondo}
-          acciones={medio}
-          abierta={abierta}
-          setAbierta={setAbierta}
-        />
+        <Bloque titulo="Para el mediano plazo" acciones={medio}
+          abierta={abierta} setAbierta={setAbierta} />
       )}
 
-      {/* ── Vía gratuita para pequeños generadores ── */}
-      {(p.categoriaRespel === "micro" || p.categoriaRespel === "pequeño") && (
-        <div style={{ background: C.verdeFondo, border: `1px solid #CBE0D3`, borderRadius: 12, padding: "18px 20px" }}>
+      {/* ══ Leyenda ══ */}
+      <div style={{ background: C.hueso, borderRadius: 12, padding: "16px 20px" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: C.gris, marginBottom: 10 }}>
+          Cómo leer estos resultados
+        </div>
+        <div style={{ display: "grid", gap: 7 }}>
+          {(Object.keys(NATURALEZA_META) as Array<keyof typeof NATURALEZA_META>)
+            .filter((k) => obligaciones.some((o) => o.naturaleza === k))
+            .map((k) => (
+              <div key={k} style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 12.5 }}>
+                <span style={{
+                  background: NATURALEZA_META[k].fondo, color: NATURALEZA_META[k].color,
+                  padding: "2px 9px", borderRadius: 4, fontWeight: 700, fontSize: 11,
+                  whiteSpace: "nowrap",
+                }}>
+                  {NATURALEZA_META[k].etiqueta}
+                </span>
+                <span style={{ color: C.gris }}>
+                  {k === "obligacion_verificada" && "Exigible, con norma y artículo identificados"}
+                  {k === "requisito_potencial" && "Puede aplicar según condiciones adicionales"}
+                  {k === "recomendacion_tecnica" && "Recomendable, no exigible por norma"}
+                  {k === "buena_practica" && "Mejora voluntaria"}
+                  {k === "requiere_verificacion" && "Sin información suficiente para concluir"}
+                  {k === "informacion_declarada" && "Proviene solo de lo que usted indicó"}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* ══ Posconsumo, solo para generación baja ══ */}
+      {p.generaRespel && cat.exentoRegistro && cat.categoria === "exento" && (
+        <div style={{ background: C.verdeFondo, border: "1px solid #CBE0D3", borderRadius: 12, padding: "18px 20px" }}>
           <div style={{ fontSize: 14.5, fontWeight: 700, color: C.verde, marginBottom: 6 }}>
-            Vía gratuita para su volumen
+            Programas posconsumo
           </div>
           <p style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.6, margin: "0 0 12px" }}>
-            Por la cantidad que genera, varios de sus residuos los reciben sin costo
-            los programas posconsumo autorizados:
+            Estos programas reciben sin costo determinados residuos:
           </p>
           <div style={{ display: "grid", gap: 6 }}>
             {POSCONSUMO.map((x) => (
@@ -182,97 +259,138 @@ export default function ResultadoAccionable(p: Props) {
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 12.5, color: C.gris, marginTop: 12, marginBottom: 0 }}>
-            Las alcaldías también hacen campañas de recolección una o dos veces al año.
-          </p>
-        </div>
-      )}
-
-      {/* ── Si no conoce su volumen ── */}
-      {p.categoriaRespel === "no_se" && (
-        <div style={{ background: C.ambarFondo, border: `1px solid #F0DFBE`, borderRadius: 12, padding: "18px 20px" }}>
-          <div style={{ fontSize: 14.5, fontWeight: 700, color: C.ambar, marginBottom: 6 }}>
-            No sabemos su categoría de generador
-          </div>
-          <p style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.6, margin: 0 }}>
-            La categoría define qué obligaciones le aplican, y depende de cuántos kilos
-            de residuos peligrosos genera al mes. Pese lo que genera durante un mes:
-            con ese dato podemos decirle exactamente qué le exige la norma.
+          <p style={{ fontSize: 12, color: "#8A9188", marginTop: 10, marginBottom: 0 }}>
+            Verifique los puntos de recolección vigentes con cada programa.
           </p>
         </div>
       )}
 
       <p style={{ fontSize: 12, color: "#8A9188", lineHeight: 1.6, textAlign: "center", margin: "6px 0 0" }}>
-        Este resultado es orientativo y se basa en lo que usted respondió. No constituye
-        concepto técnico ni certifica el cumplimiento de su establecimiento.
+        Este resultado es orientativo y se basa en la información que usted suministró.
+        No constituye concepto técnico ni certifica el cumplimiento normativo de su
+        establecimiento ante la autoridad ambiental.
       </p>
     </div>
   );
 }
 
-/* ── Bloque de acciones por urgencia ────────────────────── */
+/* ── Bloque de obligaciones ─────────────────────────────── */
 function Bloque({
-  titulo, subtitulo, color, fondo, acciones, abierta, setAbierta,
+  titulo, acciones, abierta, setAbierta,
 }: {
-  titulo: string; subtitulo: string; color: string; fondo: string;
-  acciones: Accion[]; abierta: string | null;
-  setAbierta: (v: string | null) => void;
+  titulo: string; acciones: Obligacion[];
+  abierta: string | null; setAbierta: (v: string | null) => void;
 }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${C.linea}`, borderRadius: 12, overflow: "hidden" }}>
-      <div style={{ background: fondo, padding: "14px 20px", borderBottom: `1px solid ${C.linea}` }}>
-        <div style={{ fontSize: 15, fontWeight: 700, color }}>{titulo}</div>
-        <div style={{ fontSize: 12.5, color: C.gris, marginTop: 2 }}>{subtitulo}</div>
+      <div style={{ background: C.hueso, padding: "13px 20px", borderBottom: `1px solid ${C.linea}` }}>
+        <div style={{ fontSize: 14.5, fontWeight: 700, color: C.tinta }}>
+          {titulo}
+          <span style={{ fontWeight: 400, color: C.gris, marginLeft: 8, fontSize: 13 }}>
+            · {acciones.length}
+          </span>
+        </div>
       </div>
 
-      {acciones.map((a) => {
-        const open = abierta === a.id;
+      {acciones.map((o) => {
+        const open = abierta === o.id;
+        const meta = NATURALEZA_META[o.naturaleza];
         return (
-          <div key={a.id} style={{ borderBottom: `1px solid ${C.hueso}` }}>
+          <div key={o.id} style={{ borderBottom: `1px solid ${C.hueso}` }}>
             <button
-              onClick={() => setAbierta(open ? null : a.id)}
+              onClick={() => setAbierta(open ? null : o.id)}
               style={{
                 width: "100%", background: "none", border: "none", cursor: "pointer",
                 padding: "14px 20px", textAlign: "left", fontFamily: "inherit",
                 display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12,
+                borderLeft: `3px solid ${meta.color}`,
               }}
             >
               <div style={{ flex: 1 }}>
+                <span style={{
+                  display: "inline-block", background: meta.fondo, color: meta.color,
+                  padding: "2px 9px", borderRadius: 4, fontSize: 10.5, fontWeight: 700,
+                  marginBottom: 6, letterSpacing: ".3px",
+                }}>
+                  {meta.etiqueta}
+                </span>
                 <div style={{ fontSize: 14.5, fontWeight: 600, color: C.tinta, lineHeight: 1.4 }}>
-                  {a.titulo}
+                  {o.titulo}
                 </div>
-                <div style={{ fontSize: 12, color: C.gris, marginTop: 4 }}>{a.norma}</div>
-                {a.plazo && (
-                  <div style={{ fontSize: 12, color, marginTop: 3, fontWeight: 600 }}>
-                    {a.plazo}
+                {o.fuente && (
+                  <div style={{ fontSize: 12, color: C.gris, marginTop: 4 }}>
+                    {o.fuente.norma} · {o.fuente.articulo}
+                  </div>
+                )}
+                {o.plazo && (
+                  <div style={{ fontSize: 12, color: meta.color, marginTop: 3, fontWeight: 600 }}>
+                    {o.plazo}
                   </div>
                 )}
               </div>
-              <span style={{ fontSize: 18, color: C.gris, lineHeight: 1, transform: open ? "rotate(45deg)" : "none", transition: "transform .2s" }}>
-                +
-              </span>
+              <span style={{
+                fontSize: 18, color: C.gris, lineHeight: 1,
+                transform: open ? "rotate(45deg)" : "none", transition: "transform .2s",
+              }}>+</span>
             </button>
 
             {open && (
-              <div style={{ padding: "0 20px 16px" }}>
-                <ol style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.75, margin: "0 0 10px", paddingLeft: 18 }}>
-                  {a.pasos.map((s, i) => <li key={i}>{s}</li>)}
-                </ol>
-                {a.costo && (
-                  <div style={{ fontSize: 12.5, color: C.gris, marginBottom: 8 }}>
-                    <strong>Costo:</strong> {a.costo}
+              <div style={{ padding: "0 20px 16px 23px" }}>
+
+                {o.advertencia && (
+                  <div style={{
+                    background: meta.fondo, borderRadius: 6, padding: "10px 12px",
+                    fontSize: 12.5, color: meta.color, lineHeight: 1.55, marginBottom: 12,
+                  }}>
+                    {o.advertencia}
                   </div>
                 )}
-                {a.guia && (
-                  <a
-                    href={a.guia}
-                    target="_blank"
-                    rel="noopener noreferrer"
+
+                <div style={{ fontSize: 12, fontWeight: 700, color: C.gris, marginBottom: 5 }}>
+                  Qué hacer
+                </div>
+                <ol style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.75, margin: "0 0 12px", paddingLeft: 18 }}>
+                  {o.acciones.map((s, i) => <li key={i}>{s}</li>)}
+                </ol>
+
+                <div style={{ fontSize: 12, fontWeight: 700, color: C.gris, marginBottom: 5 }}>
+                  Qué debe conservar como evidencia
+                </div>
+                <ul style={{ fontSize: 13.5, color: C.gris, lineHeight: 1.75, margin: "0 0 12px", paddingLeft: 18 }}>
+                  {o.evidencias.map((s, i) => <li key={i}>{s}</li>)}
+                </ul>
+
+                <div style={{ display: "flex", gap: 20, flexWrap: "wrap", fontSize: 12.5, color: C.gris, marginBottom: 10 }}>
+                  <div><strong>Frecuencia:</strong> {o.frecuencia}</div>
+                  {o.costo && <div><strong>Costo:</strong> {o.costo.valor}</div>}
+                </div>
+
+                {o.fuente ? (
+                  <div style={{
+                    fontSize: 11.5, color: "#8A9188", lineHeight: 1.6,
+                    paddingTop: 10, borderTop: `1px solid ${C.hueso}`,
+                  }}>
+                    <strong>{o.fuente.norma}</strong> · {o.fuente.articulo}<br />
+                    {o.fuente.entidad}<br />
+                    Consultado en {o.fuente.fuenteConsultada} · verificado el{" "}
+                    {o.fuente.fechaVerificacion} · fuente nivel {o.fuente.nivelFuente} ·
+                    confianza {o.fuente.confianza}
+                  </div>
+                ) : (
+                  <div style={{
+                    fontSize: 11.5, color: C.morado, lineHeight: 1.6,
+                    paddingTop: 10, borderTop: `1px solid ${C.hueso}`,
+                  }}>
+                    Sin fuente normativa verificada. Requiere confirmación profesional.
+                  </div>
+                )}
+
+                {o.guia && (
+                  <a href={o.guia} target="_blank" rel="noopener noreferrer"
                     style={{
-                      display: "inline-block", fontSize: 13, fontWeight: 700,
-                      color: C.verde, textDecoration: "none",
-                    }}
-                  >
+                      display: "inline-block", marginTop: 10, fontSize: 13,
+                      fontWeight: 700, color: C.verde, textDecoration: "none",
+                    }}>
                     Descargar la guía completa →
                   </a>
                 )}
