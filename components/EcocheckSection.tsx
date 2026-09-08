@@ -3,7 +3,6 @@
 import { useState } from "react";
 import CapturaProspecto from "./CapturaProspecto";
 import { evento, eventoPersonalizado } from "./MetaPixel";
-import ResultadoAccionable from "./ResultadoAccionable";
 
 /* =========================================================
    SOSING ECOCHECK — Sección para sosinggroup.com
@@ -32,34 +31,11 @@ const BUSINESS_TYPES = [
   "Veterinaria", "Estética / tatuajes", "Funeraria", "Otro negocio",
 ];
 
-type Q = {
-  id: string;
-  text: string;
-  tag: string;
-  inverse?: boolean;
-  opciones?: { valor: string; texto: string }[];   // pregunta de rango
-  soloSi?: { id: string; valor: string };          // condicional
-};
+type Q = { id: string; text: string; tag: string; inverse?: boolean };
 const QUESTIONS: Q[] = [
   { id: "q1", text: "¿Generas residuos peligrosos (aceites, químicos, pilas, luminarias)?", tag: "RESPEL" },
-  { id: "q1b", text: "¿Aproximadamente cuánto pesan esos residuos peligrosos al mes?",
-    tag: "Categoría de generador", soloSi: { id: "q1", valor: "si" },
-    opciones: [
-      { valor: "micro",   texto: "Menos de 10 kg" },
-      { valor: "pequeño", texto: "Entre 10 y 100 kg" },
-      { valor: "mediano", texto: "Entre 100 y 1.000 kg" },
-      { valor: "grande",  texto: "Más de 1.000 kg" },
-      { valor: "no_se",   texto: "No sé cuánto genero" },
-    ] },
   { id: "q2", text: "¿Usas o generas Aceite de Cocina Usado (ACU)?", tag: "ACU" },
-  { id: "q3", text: "¿A dónde van las aguas residuales de tu negocio?",
-    tag: "Vertimientos",
-    opciones: [
-      { valor: "alcantarillado", texto: "Al alcantarillado público" },
-      { valor: "fuente",         texto: "A un río, quebrada o al suelo" },
-      { valor: "pozo",           texto: "A pozo séptico" },
-      { valor: "no_se",          texto: "No sé" },
-    ] },
+  { id: "q3", text: "¿Viertes aguas residuales a alcantarillado, río o suelo?", tag: "Vertimientos" },
   { id: "q4", text: "¿Captas agua de pozo, aljibe o fuente natural?", tag: "Concesión de aguas" },
   { id: "q5", text: "¿Generas más de 1 m³ de residuos sólidos ordinarios al día?", tag: "PGIRS" },
   { id: "q6", text: "¿Tu negocio realiza obra civil, remodelación o movimiento de tierra?", tag: "RCD" },
@@ -136,58 +112,20 @@ export default function EcocheckSection() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [qIndex, setQIndex] = useState(0);
 
-  /* Preguntas visibles: se omiten las condicionales no aplicables */
-  const aplicables = QUESTIONS.filter(
-    (q) => !q.soloSi || answers[q.soloSi.id] === q.soloSi.valor
-  );
-
   let score = 0;
   const riesgos: string[] = [];
-  aplicables.forEach((q) => {
+  QUESTIONS.forEach((q) => {
     const v = answers[q.id];
-    if (!v) return;
-    if (q.opciones) {
-      // Las preguntas de rango puntúan según la respuesta, no por sí/no
-      if (q.id === "q1b" && ["mediano", "grande"].includes(v)) {
-        score += 2; riesgos.push(q.tag);
-      } else if (q.id === "q1b" && v === "no_se") {
-        score++; riesgos.push("Categoría de generador sin determinar");
-      } else if (q.id === "q3" && ["fuente", "pozo"].includes(v)) {
-        score += 2; riesgos.push("Vertimiento fuera de alcantarillado");
-      } else if (q.id === "q3" && v === "alcantarillado") {
-        riesgos.push("Trampa de grasas");
-      }
-      return;
-    }
     const positive = q.inverse ? v === "no" : v === "si";
     if (positive) { score++; riesgos.push(q.tag); }
   });
-
-  const total = aplicables.length;
-  const level: "rojo" | "amarillo" | "verde" =
-    score >= Math.ceil(total * 0.55) ? "rojo"
-    : score >= Math.ceil(total * 0.30) ? "amarillo"
-    : "verde";
-
-  /* Datos derivados para el resultado accionable */
-  const categoriaRespel = (answers["q1"] === "si" ? (answers["q1b"] || "no_se") : "no_genera") as any;
-  const vierteAlAlcantarillado =
-    answers["q3"] === "alcantarillado" ? true
-    : ["fuente", "pozo"].includes(answers["q3"] || "") ? false
-    : null;
+  const level: "rojo" | "amarillo" | "verde" = score >= 7 ? "rojo" : score >= 4 ? "amarillo" : "verde";
 
   const answer = (v: string) => {
-    const q = aplicables[qIndex];
+    const q = QUESTIONS[qIndex];
     if (qIndex === 0) eventoPersonalizado("DiagnosticoIniciado");
-    const nuevas = { ...answers, [q.id]: v };
-    setAnswers(nuevas);
-
-    // Recalcular aplicables con la respuesta recién dada
-    const siguientes = QUESTIONS.filter(
-      (x) => !x.soloSi || nuevas[x.soloSi.id] === x.soloSi.valor
-    );
-
-    if (qIndex < siguientes.length - 1) setQIndex(qIndex + 1);
+    setAnswers((a) => ({ ...a, [q.id]: v }));
+    if (qIndex < QUESTIONS.length - 1) setQIndex(qIndex + 1);
     else {
       setStep("resultado");
       eventoPersonalizado("DiagnosticoCompletado", {
@@ -280,37 +218,25 @@ export default function EcocheckSection() {
               </div>
             )}
 
-            {step === "quiz" && aplicables[qIndex] && (
+            {step === "quiz" && (
               <div>
                 <div className="text-xs uppercase tracking-wider text-[#8A9188] mb-2">
-                  Pregunta {qIndex + 1} de {aplicables.length}
+                  Pregunta {qIndex + 1} de {QUESTIONS.length}
                 </div>
                 <div className="h-1 bg-[#E1E7E2] rounded mb-6">
                   <div className="h-1 bg-[#1F5C38] rounded transition-all"
-                    style={{ width: `${(qIndex / aplicables.length) * 100}%` }} />
+                    style={{ width: `${(qIndex / QUESTIONS.length) * 100}%` }} />
                 </div>
                 <div className="text-xs uppercase tracking-wider text-[#C99A3A] font-bold mb-2">
-                  {aplicables[qIndex].tag}
+                  {QUESTIONS[qIndex].tag}
                 </div>
-                <h3 className="text-xl font-extrabold mb-6">{aplicables[qIndex].text}</h3>
-
-                {aplicables[qIndex].opciones ? (
-                  <div className="flex flex-col gap-2.5">
-                    {aplicables[qIndex].opciones!.map((o) => (
-                      <button key={o.valor} onClick={() => answer(o.valor)}
-                        className="w-full text-left border border-[#E1E7E2] rounded-lg py-3.5 px-4 font-semibold hover:border-[#1F5C38] hover:bg-[#F4F6F2] transition">
-                        {o.texto}
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex gap-3">
-                    <button onClick={() => answer("si")}
-                      className="flex-1 border border-[#E1E7E2] rounded-lg py-4 font-semibold hover:border-[#1F5C38] transition">Sí</button>
-                    <button onClick={() => answer("no")}
-                      className="flex-1 border border-[#E1E7E2] rounded-lg py-4 font-semibold hover:border-[#1F5C38] transition">No</button>
-                  </div>
-                )}
+                <h3 className="text-xl font-extrabold mb-6">{QUESTIONS[qIndex].text}</h3>
+                <div className="flex gap-3">
+                  <button onClick={() => answer("si")}
+                    className="flex-1 border border-[#E1E7E2] rounded-lg py-4 font-semibold hover:border-[#1F5C38] transition">Sí</button>
+                  <button onClick={() => answer("no")}
+                    className="flex-1 border border-[#E1E7E2] rounded-lg py-4 font-semibold hover:border-[#1F5C38] transition">No</button>
+                </div>
               </div>
             )}
 
@@ -341,20 +267,6 @@ export default function EcocheckSection() {
                       <span className="w-1.5 h-1.5 rounded-full bg-[#C1442E]" />{r}
                     </div>
                   ))}
-                </div>
-
-                {/* Plan de acción concreto */}
-                <div className="mt-6 mb-6">
-                  <ResultadoAccionable
-                    autoridad={CARS[depto] || "su autoridad ambiental"}
-                    departamento={depto}
-                    tipoNegocio={tipo}
-                    categoriaRespel={categoriaRespel}
-                    generaACU={answers["q2"] === "si"}
-                    generaResiduos={answers["q5"] === "si"}
-                    vierteAlAlcantarillado={vierteAlAlcantarillado}
-                    esSalud={answers["q11"] === "si"}
-                  />
                 </div>
 
                 <CapturaProspecto
