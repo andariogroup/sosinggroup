@@ -148,10 +148,8 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.sosinggroup.com"),
   alternates: {
-    canonical: "https://www.sosinggroup.com",
-    languages: {
-      "es-CO": "https://www.sosinggroup.com",
-    },
+    canonical: "/",
+    languages: { "es-CO": "/" },
   },
   openGraph: {
     type: "website",
@@ -162,17 +160,17 @@ export const metadata: Metadata = {
     siteName: "SOSING S.A.S",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        url: "https://www.sosinggroup.com/images/ptap-pasipamana.jpg",
         width: 1200,
         height: 630,
         alt: "SOSING S.A.S - Ingeniería Sostenible",
         type: "image/jpeg",
       },
       {
-        url: "https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        url: "https://www.sosinggroup.com/images/ptap-pasipamana.jpg",
         width: 800,
         height: 600,
-        alt: "SOSING S.A.S - Proyectos de Ingeniería",
+        alt: "PTAP Pasipamana — planta de potabilización con energía solar, La Guajira",
         type: "image/jpeg",
       },
     ],
@@ -181,7 +179,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SOSING S.A.S - Ingeniería Sostenible",
     description: "Líderes en ingeniería sostenible en Colombia con más de 10 años de experiencia.",
-    images: ["https://images.unsplash.com/photo-1581094794329-8c6305f9db88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"],
+    images: ["https://www.sosinggroup.com/images/ptap-pasipamana.jpg"],
   },
   robots: {
     index: true,
@@ -195,8 +193,6 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
   },
 };
 
@@ -218,7 +214,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#2E7D32" />
         
         {/* Preconnect para optimización */}
-        <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         

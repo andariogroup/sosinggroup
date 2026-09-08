@@ -30,6 +30,7 @@ export default function CapturaProspecto({
   const [datos, setDatos] = useState({ nombre: "", empresa: "", email: "", tel: "" });
   const [acepta, setAcepta] = useState(false);
   const [estado, setEstado] = useState<"form" | "enviando" | "listo">("form");
+  const [correoEnviado, setCorreoEnviado] = useState(false);
   const [error, setError] = useState("");
 
   const cambiar = (k: string, v: string) => setDatos((d) => ({ ...d, [k]: v }));
@@ -42,48 +43,40 @@ export default function CapturaProspecto({
     setError("");
     setEstado("enviando");
 
-    const payload = {
-      fecha: new Date().toISOString(),
-      nombre: datos.nombre,
-      empresa: datos.empresa,
-      email: datos.email,
-      telefono: datos.tel,
-      tipo_negocio: tipoNegocio,
-      departamento,
-      autoridad,
-      nivel_riesgo: nivelRiesgo,
-      riesgos: riesgos.join(" | "),
-      origen: "Diagnóstico gratuito ECOCHECK",
-    };
+    try {
+      const r = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: datos.nombre,
+          empresa: datos.empresa,
+          email: datos.email,
+          telefono: datos.tel,
+          tipoNegocio,
+          departamento,
+          autoridad,
+          nivelRiesgo,
+          riesgos,
+        }),
+      });
 
-    if (WEBHOOK) {
-      try {
-        await fetch(WEBHOOK, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-      } catch {
-        // Si el webhook falla, no perdemos el contacto: sigue el respaldo
+      const res = await r.json();
+
+      if (!r.ok || !res.ok) {
+        setEstado("form");
+        return setError(
+          "No pudimos registrar su solicitud. Escríbanos por WhatsApp al 311 660 8217."
+        );
       }
-    } else {
-      // Respaldo: abre WhatsApp con los datos del prospecto
-      const texto =
-        `*Nuevo diagnóstico ECOCHECK*\n\n` +
-        `*Nombre:* ${datos.nombre}\n` +
-        (datos.empresa ? `*Empresa:* ${datos.empresa}\n` : "") +
-        `*Correo:* ${datos.email}\n` +
-        (datos.tel ? `*Teléfono:* ${datos.tel}\n` : "") +
-        `\n*Actividad:* ${tipoNegocio}\n` +
-        `*Departamento:* ${departamento}\n` +
-        `*Autoridad:* ${autoridad}\n` +
-        `*Nivel de riesgo:* ${nivelRiesgo}\n` +
-        (riesgos.length ? `\n*Puntos detectados:*\n${riesgos.map((r) => `• ${r}`).join("\n")}` : "");
-      window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`, "_blank");
-    }
 
-    evento("Lead", { content_name: "Diagnóstico ECOCHECK", value: 0, currency: "COP" });
-    setEstado("listo");
+      setCorreoEnviado(Boolean(res.correoEnviado));
+      setEstado("listo");
+    } catch {
+      setEstado("form");
+      setError(
+        "Hubo un problema de conexión. Escríbanos por WhatsApp al 311 660 8217."
+      );
+    }
   };
 
   if (estado === "listo") {
@@ -96,8 +89,12 @@ export default function CapturaProspecto({
         </div>
         <div className="font-bold text-lg text-[#16211B] mb-2">Listo, {datos.nombre.split(" ")[0]}</div>
         <p className="text-sm text-[#5C6A62] leading-relaxed mb-4">
-          Ya tenemos sus datos. Mientras tanto, descargue las guías técnicas que preparamos
-          para su tipo de actividad.
+          {correoEnviado
+            ? `Le enviamos el detalle a ${datos.email}. Si no lo ve en unos minutos, revise la carpeta de correo no deseado.`
+            : "Recibimos sus datos. Un ingeniero de SOSING lo contactará pronto para comentarle el resultado."}
+        </p>
+        <p className="text-sm text-[#5C6A62] leading-relaxed mb-4">
+          Mientras tanto, descargue las guías técnicas que preparamos para su actividad.
         </p>
         <a
           href="#ecocheck"
@@ -120,11 +117,11 @@ export default function CapturaProspecto({
           SIN COSTO
         </div>
         <div className="font-extrabold text-lg text-[#16211B] mb-1">
-          Reciba este resultado por correo
+          Reciba su diagnóstico completo
         </div>
         <p className="text-sm text-[#5C6A62] leading-relaxed">
-          Le enviamos el detalle de su diagnóstico junto con las guías técnicas
-          que aplican a su actividad.
+          Le enviamos el detalle a su correo y un ingeniero queda atento
+          a resolverle cualquier duda.
         </p>
       </div>
 

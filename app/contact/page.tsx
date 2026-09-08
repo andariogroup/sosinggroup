@@ -2,6 +2,14 @@
 import Footer from "@/components/Footer";
 import FormularioContacto from "@/components/FormularioContacto";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contacto — SOSING S.A.S.",
+  description: "Escríbanos por WhatsApp o visítenos en Av. Simón Bolívar 21-44, Valledupar. Le responde un ingeniero.",
+  alternates: { canonical: "/contact" },
+};
+
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">

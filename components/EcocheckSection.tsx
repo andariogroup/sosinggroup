@@ -172,7 +172,7 @@ export default function EcocheckSection() {
                 <div className="flex justify-center mb-6"><Semaforo level="rojo" /></div>
                 <h3 className="text-2xl font-extrabold mb-3">¿Tu negocio está en regla?</h3>
                 <p className="text-[#5C6A62] mb-7">
-                  Responde 10 preguntas y obtén tu semáforo de riesgo ambiental, con la autoridad
+                  Responde 11 preguntas y obtén tu semáforo de riesgo ambiental, con la autoridad
                   competente identificada automáticamente.
                 </p>
                 <button onClick={() => setStep("tipo")}

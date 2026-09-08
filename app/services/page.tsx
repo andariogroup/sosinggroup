@@ -3,6 +3,14 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Servicios de ingeniería ambiental — SOSING S.A.S.",
+  description: "Ingeniería ambiental, agua potable, gestión de residuos, obra civil, consultoría e interventoría en Cesar y La Guajira.",
+  alternates: { canonical: "/services" },
+};
+
 const services = [
   {
     slug: "ingenieria-ambiental",

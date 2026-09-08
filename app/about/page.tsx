@@ -3,6 +3,14 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Quiénes Somos — SOSING S.A.S.",
+  description: "Firma de ingeniería ambiental en Valledupar con más de 10 años de experiencia en agua, saneamiento, gestión ambiental e interventoría.",
+  alternates: { canonical: "/about" },
+};
+
 const teamMembers = [
   {
     name: "Ing. Yair Alfonso",

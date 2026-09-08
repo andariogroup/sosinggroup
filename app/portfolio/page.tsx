@@ -2,6 +2,14 @@
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Portafolio de proyectos — SOSING S.A.S.",
+  description: "Obras de protección de ribera, potabilización con energía solar, supervisión ambiental y caracterización de vertimientos en el Caribe colombiano.",
+  alternates: { canonical: "/portfolio" },
+};
+
 const projects = [
   {
     id: 1,
