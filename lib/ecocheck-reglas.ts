@@ -33,6 +33,7 @@ export type Fuente = {
   articulo: string;
   entidad: string;
   fuenteConsultada: string;
+  urlOficial?: string;
   nivelFuente: 1 | 2 | 3 | 4 | 5;
   fechaVerificacion: string;
   confianza: "alta" | "media" | "baja";
@@ -43,12 +44,14 @@ export type Obligacion = {
   id: string;
   ruleId: string;
   titulo: string;
+  porQueAplica: string;              // condición que la activó
   naturaleza: Naturaleza;
   urgencia: "inmediata" | "corto" | "medio";
   acciones: string[];
   evidencias: string[];
   frecuencia: string;
   plazo?: string;
+  autoridad: string;
   costo?: { valor: string; fuente: string | null };
   fuente: Fuente | null;
   guia?: string;
@@ -168,6 +171,8 @@ const MSG_NO_DETERMINABLE =
   "la categoría. Se requiere información adicional para aplicar la metodología " +
   "correspondiente.";
 
+/* La clasificación se delega al motor. Ver lib/ecocheck-motor-respel.ts
+   Esta función se conserva como puente para el respaldo sin bitácora. */
 export function clasificarRespel(
   rangoDeclarado: string,
   mesesRegistro: string
@@ -183,8 +188,7 @@ export function clasificarRespel(
 
   const m = MAPA_CATEGORIA[rangoDeclarado];
 
-  /* No conoce su generación, o valor no reconocido */
-  if (!m) {
+  if (!m || mesesRegistro === "sin" || mesesRegistro === "") {
     return {
       estado: "NO_DETERMINABLE", categoria: null,
       nombre: "Categoría no determinable", detalle: "",
@@ -192,32 +196,16 @@ export function clasificarRespel(
       exentoRegistro: false, mesesDisponibles: mesesRegistro, fuente: FUENTE_RESPEL,
     };
   }
-
-  /* Sin registros: no hay base para estimar */
-  if (mesesRegistro === "sin" || mesesRegistro === "") {
-    return {
-      estado: "NO_DETERMINABLE", categoria: null,
-      nombre: "Categoría no determinable", detalle: "",
-      mensaje: MSG_NO_DETERMINABLE,
-      exentoRegistro: false, mesesDisponibles: mesesRegistro, fuente: FUENTE_RESPEL,
-    };
-  }
-
-  /* Con registros, la salida es siempre ESTIMADA:
-     el sistema no calcula la media móvil, la declara el usuario. */
-  const seisOMas = mesesRegistro === "6_mas";
 
   return {
     estado: "ESTIMADA",
     categoria: m.cat,
     nombre: m.nombre,
     detalle: m.detalle,
-    mensaje: seisOMas
-      ? `Su generación sugiere la categoría de ${m.nombre.toLowerCase()}, sujeta a ` +
-        "verificación con el registro de los últimos seis meses."
-      : `Su generación sugiere la categoría de ${m.nombre.toLowerCase()}, sujeta a ` +
-        "verificación con la información requerida por la metodología normativa, " +
-        "que exige la media móvil de los últimos seis meses.",
+    mensaje:
+      "Esta clasificación es estimada porque la información histórica " +
+      "suministrada es incompleta. La metodología normativa exige la media " +
+      "móvil de los últimos seis meses de cantidades pesadas.",
     exentoRegistro: m.exento,
     mesesDisponibles: mesesRegistro,
     fuente: FUENTE_RESPEL,
@@ -256,6 +244,7 @@ const F_ACU_BASE: Fuente = {
   articulo: "Artículo 9 literal a) — procedimiento en el artículo 5",
   entidad: "Ministerio de Ambiente y Desarrollo Sostenible",
   fuenteConsultada: "SUIN-Juriscol · Normograma Invima · Normograma Cancillería",
+  urlOficial: "https://www.suin-juriscol.gov.co/viewDocument.asp?ruta=Resolucion/30040378",
   nivelFuente: 1,
   fechaVerificacion: "2026-09-08",
   confianza: "alta",
@@ -267,6 +256,9 @@ export function obligacionesACU(): Obligacion[] {
       id: "acu-inscripcion",
       ruleId: "ACU-INSC-001",
       titulo: "Inscribirse ante la autoridad ambiental competente",
+      porQueAplica:
+        "Usted declaró que su establecimiento genera Aceite de Cocina Usado",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "inmediata",
       acciones: [
@@ -286,6 +278,9 @@ export function obligacionesACU(): Obligacion[] {
       id: "acu-gestor",
       ruleId: "ACU-GEST-001",
       titulo: "Entregar el ACU a gestores inscritos ante la autoridad ambiental",
+      porQueAplica:
+        "Usted declaró que genera ACU y debe entregarlo a un tercero",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "inmediata",
       acciones: [
@@ -308,6 +303,9 @@ export function obligacionesACU(): Obligacion[] {
       id: "acu-capacitacion",
       ruleId: "ACU-CAPA-001",
       titulo: "Capacitar al personal encargado de la gestión del ACU",
+      porQueAplica:
+        "Usted declaró que genera ACU y tiene personal a cargo de su manejo",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "corto",
       acciones: [
@@ -329,6 +327,9 @@ export function obligacionesACU(): Obligacion[] {
       id: "acu-reporte",
       ruleId: "ACU-REP-001",
       titulo: "Presentar el reporte anual ante la autoridad ambiental",
+      porQueAplica:
+        "Usted declaró que genera ACU como establecimiento industrial, comercial o de servicios",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "medio",
       plazo: "Dentro de los primeros quince (15) días del mes de enero de cada año",
@@ -361,6 +362,9 @@ export function obligacionesACU(): Obligacion[] {
       id: "acu-almacenamiento",
       ruleId: "ACU-ALMA-001",
       titulo: "Almacenamiento del ACU en recipiente exclusivo y rotulado",
+      porQueAplica:
+        "Usted declaró que genera ACU y debe almacenarlo antes de entregarlo",
+      autoridad: "Por determinar — puede corresponder a autoridad sanitaria",
       naturaleza: "requiere_verificacion",
       urgencia: "inmediata",
       acciones: [
@@ -390,6 +394,7 @@ const F_RESPEL_MANEJO: Fuente = {
   articulo: "Artículo 2.2.6.1.3.1",
   entidad: "Ministerio de Ambiente y Desarrollo Sostenible",
   fuenteConsultada: "Gestor Normativo Función Pública",
+  urlOficial: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=18718",
   nivelFuente: 2,
   fechaVerificacion: "2026-09-08",
   confianza: "media",
@@ -413,6 +418,9 @@ export function obligacionesRespel(r: ResultadoCategoria): Obligacion[] {
       id: "respel-manejo",
       ruleId: "RESPEL-MANEJO-001",
       titulo: "Garantizar el manejo seguro de los residuos peligrosos",
+      porQueAplica:
+        "Usted declaró que genera residuos peligrosos",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "inmediata",
       acciones: [
@@ -432,6 +440,9 @@ export function obligacionesRespel(r: ResultadoCategoria): Obligacion[] {
       id: "respel-gestor",
       ruleId: "RESPEL-GEST-001",
       titulo: "Entregar a gestor autorizado y conservar los certificados",
+      porQueAplica:
+        "Usted declaró que genera residuos peligrosos que debe entregar a un gestor",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "corto",
       acciones: [
@@ -451,6 +462,9 @@ export function obligacionesRespel(r: ResultadoCategoria): Obligacion[] {
       id: "respel-bitacora",
       ruleId: "RESPEL-BITA-001",
       titulo: "Llevar bitácora mensual de cantidades generadas",
+      porQueAplica:
+        "La bitácora es el insumo con el que se determina su categoría de generador",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "inmediata",
       acciones: [
@@ -474,6 +488,9 @@ export function obligacionesRespel(r: ResultadoCategoria): Obligacion[] {
       id: "respel-registro",
       ruleId: "RESPEL-REG-001",
       titulo: "Inscribirse en el Registro de Generadores de RESPEL",
+      porQueAplica:
+        "Su generación estimada supera el umbral de 10,0 kg/mes",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "obligacion_verificada",
       urgencia: "inmediata",
       plazo: "Actualización anual",
@@ -502,6 +519,9 @@ export function obligacionesRespel(r: ResultadoCategoria): Obligacion[] {
       id: "respel-exencion",
       ruleId: "RESPEL-EXEN-001",
       titulo: "Su generación estaría por debajo del umbral de registro",
+      porQueAplica:
+        "Su generación estimada está por debajo de 10,0 kg/mes",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "informacion_declarada",
       urgencia: "inmediata",
       acciones: [
@@ -531,6 +551,9 @@ export function obligacionesRespel(r: ResultadoCategoria): Obligacion[] {
       id: "respel-indeterminado",
       ruleId: "RESPEL-INDET-001",
       titulo: "Determinar su categoría de generador",
+      porQueAplica:
+        "No hay registros suficientes para aplicar la metodología normativa",
+      autoridad: "Autoridad ambiental competente de la jurisdicción",
       naturaleza: "requiere_verificacion",
       urgencia: "inmediata",
       acciones: [
@@ -563,6 +586,9 @@ export function obligacionesVertimientos(destino: string): Obligacion[] {
         id: "vert-pretratamiento",
         ruleId: "VERT-GRASAS-001",
         titulo: "Pretratamiento de grasas antes del alcantarillado",
+        porQueAplica:
+          "Usted declaró que sus aguas residuales van al alcantarillado público",
+        autoridad: "Prestador del servicio de alcantarillado y autoridad ambiental",
         naturaleza: "requisito_potencial",
         urgencia: "inmediata",
         acciones: [
@@ -582,6 +608,7 @@ export function obligacionesVertimientos(destino: string): Obligacion[] {
             "Artículo 39 — Responsabilidad del prestador del servicio de alcantarillado",
           entidad: "Ministerio de Ambiente, Vivienda y Desarrollo Territorial",
           fuenteConsultada: "Gestor Normativo Función Pública",
+          urlOficial: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=40620",
           nivelFuente: 2,
           fechaVerificacion: "2026-09-08",
           confianza: "alta",
@@ -602,6 +629,9 @@ export function obligacionesVertimientos(destino: string): Obligacion[] {
         id: "vert-verificar",
         ruleId: "VERT-VERIF-001",
         titulo: "Verificar si su vertimiento requiere permiso",
+        porQueAplica:
+          "Usted declaró que sus aguas no van al alcantarillado público",
+        autoridad: "Autoridad ambiental competente de la jurisdicción",
         naturaleza: "requiere_verificacion",
         urgencia: "inmediata",
         acciones: [
@@ -629,6 +659,9 @@ export function obligacionesVertimientos(destino: string): Obligacion[] {
       id: "vert-identificar",
       ruleId: "VERT-IDENT-001",
       titulo: "Identificar el destino de sus aguas residuales",
+      porQueAplica:
+        "Usted no indicó el destino de sus aguas residuales",
+      autoridad: "Por determinar",
       naturaleza: "recomendacion_tecnica",
       urgencia: "inmediata",
       acciones: [
