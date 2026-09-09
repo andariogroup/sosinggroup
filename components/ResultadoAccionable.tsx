@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import {
+  clasificarGeneradorRespel, explicarClasificacion,
+  type RegistroMensual, type ResultadoClasificacion,
+} from "@/lib/ecocheck-motor-respel";
+import {
   datosAutoridad, clasificarRespel, obligacionesACU, obligacionesRespel,
   obligacionesVertimientos, NATURALEZA_META, METODO_RESPEL,
   RADICACION, POSCONSUMO,
@@ -21,6 +25,7 @@ type Props = {
   generaRespel: boolean;
   rangoRespel: string;
   mesesRegistro: string;
+  registros: RegistroMensual[];
   generaACU: boolean;
   destinoVertimiento: string;
 };
@@ -38,10 +43,31 @@ export default function ResultadoAccionable(p: Props) {
 
   const aut = datosAutoridad(p.autoridad);
 
-  const cat: ResultadoCategoria = clasificarRespel(
+  /* Con bitácora se usa el motor real. Sin ella, el puente declarativo. */
+  const usaMotor = p.generaRespel && p.registros.length > 0;
+
+  const motor: ResultadoClasificacion | null = usaMotor
+    ? clasificarGeneradorRespel(p.registros, p.rangoRespel)
+    : null;
+
+  const puente: ResultadoCategoria = clasificarRespel(
     p.generaRespel ? p.rangoRespel : "no_genera",
     p.mesesRegistro
   );
+
+  /* Vista unificada para el resto del componente */
+  const cat: ResultadoCategoria = motor
+    ? {
+        estado: motor.estado,
+        categoria: (motor.categoria === "bajo_umbral" ? "exento" : motor.categoria) as any,
+        nombre: motor.nombreCategoria,
+        detalle: motor.rangoNormativo,
+        mensaje: motor.mensaje,
+        exentoRegistro: motor.exentoRegistro === true,
+        mesesDisponibles: String(motor.mesesUtilizados),
+        fuente: motor.fuente,
+      }
+    : puente;
 
   const obligaciones: Obligacion[] = [
     ...(p.generaRespel ? obligacionesRespel(cat) : []),
@@ -79,10 +105,12 @@ export default function ResultadoAccionable(p: Props) {
                 <div style={{ fontSize: 19, fontWeight: 700, marginBottom: 4 }}>
                   {cat.nombre}
                   <span style={{
-                    fontSize: 11, fontWeight: 600, marginLeft: 10, padding: "3px 9px",
-                    borderRadius: 4, background: "rgba(255,255,255,.15)", verticalAlign: "middle",
+                    fontSize: 11, fontWeight: 700, marginLeft: 10, padding: "3px 9px",
+                    borderRadius: 4, verticalAlign: "middle",
+                    background: cat.estado === "DETERMINADA" ? C.mint : "rgba(255,255,255,.15)",
+                    color: cat.estado === "DETERMINADA" ? C.tinta : "#fff",
                   }}>
-                    ESTIMADA
+                    {cat.estado}
                   </span>
                 </div>
                 {cat.detalle && (
@@ -90,10 +118,38 @@ export default function ResultadoAccionable(p: Props) {
                     {cat.detalle}
                   </div>
                 )}
+                {motor?.valorCalculado !== null && motor?.valorCalculado !== undefined && (
+                  <div style={{
+                    background: "rgba(255,255,255,.08)", borderRadius: 6,
+                    padding: "10px 12px", marginTop: 8, marginBottom: 8,
+                  }}>
+                    <div style={{ fontSize: 11.5, color: C.mint, marginBottom: 3 }}>
+                      Media móvil calculada
+                    </div>
+                    <div style={{ fontSize: 22, fontWeight: 700 }}>
+                      {motor.valorCalculado} <span style={{ fontSize: 13, fontWeight: 400 }}>kg/mes</span>
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "#9FA9A3", marginTop: 3 }}>
+                      {motor.mesesUtilizados} meses · período {motor.periodoUtilizado}
+                    </div>
+                  </div>
+                )}
                 <div style={{ fontSize: 14, lineHeight: 1.6, color: "#C9D6CF" }}>
                   {cat.mensaje}
                 </div>
               </>
+            )}
+
+            {motor && motor.faltante.length > 0 && (
+              <div style={{
+                background: "rgba(180,135,47,.18)", borderRadius: 6,
+                padding: "11px 13px", marginTop: 10, fontSize: 13, lineHeight: 1.6,
+              }}>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>Para determinarla con certeza</div>
+                <ul style={{ margin: 0, paddingLeft: 18, color: "#C9D6CF" }}>
+                  {motor.faltante.map((f) => <li key={f}>{f}</li>)}
+                </ul>
+              </div>
             )}
 
             <button
@@ -114,6 +170,24 @@ export default function ResultadoAccionable(p: Props) {
               }}>
                 <div style={{ fontWeight: 700, marginBottom: 6 }}>{METODO_RESPEL.titulo}</div>
                 <p style={{ margin: "0 0 10px", color: "#C9D6CF" }}>{METODO_RESPEL.texto}</p>
+
+                {motor && (() => {
+                  const e = explicarClasificacion(motor);
+                  return (
+                    <div style={{
+                      background: "rgba(0,0,0,.2)", borderRadius: 6,
+                      padding: "12px 14px", margin: "0 0 12px", fontSize: 12.5,
+                    }}>
+                      <div style={{ fontWeight: 600, marginBottom: 6 }}>Su caso</div>
+                      <div style={{ color: "#C9D6CF", lineHeight: 1.7 }}>
+                        <div><strong>Datos:</strong> {e.datoIngresado}</div>
+                        {e.calculo && <div><strong>Cálculo:</strong> {e.calculo}</div>}
+                        <div><strong>Resultado:</strong> {e.resultado}</div>
+                        <div><strong>Confianza:</strong> {e.confianza}</div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 <div style={{ fontWeight: 600, marginBottom: 4 }}>Umbrales de la norma</div>
                 <ul style={{ margin: "0 0 10px", paddingLeft: 18, color: "#C9D6CF" }}>

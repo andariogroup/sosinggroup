@@ -4,6 +4,8 @@ import { useState } from "react";
 import CapturaProspecto from "./CapturaProspecto";
 import { evento, eventoPersonalizado } from "./MetaPixel";
 import ResultadoAccionable from "./ResultadoAccionable";
+import BitacoraRespel from "./BitacoraRespel";
+import type { RegistroMensual } from "@/lib/ecocheck-motor-respel";
 
 /* =========================================================
    SOSING ECOCHECK — Sección para sosinggroup.com
@@ -139,7 +141,8 @@ function Semaforo({ level }: { level: "rojo" | "amarillo" | "verde" }) {
 
 export default function EcocheckSection() {
   const [tab, setTab] = useState<"diagnostico" | "tienda" | "planes" | "recursos">("diagnostico");
-  const [step, setStep] = useState<"intro" | "tipo" | "depto" | "quiz" | "resultado">("intro");
+  const [registros, setRegistros] = useState<RegistroMensual[]>([]);
+  const [step, setStep] = useState<"intro" | "tipo" | "depto" | "quiz" | "bitacora" | "resultado">("intro");
   const [tipo, setTipo] = useState("");
   const [depto, setDepto] = useState("");
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -203,15 +206,16 @@ export default function EcocheckSection() {
 
     if (qIndex < siguientes.length - 1) setQIndex(qIndex + 1);
     else {
-      setStep("resultado");
       eventoPersonalizado("DiagnosticoCompletado", {
         tipo_negocio: tipo,
         departamento: depto,
       });
+      /* Si genera RESPEL, ofrecer la bitácora antes del resultado */
+      setStep(nuevas["q1"] === "si" ? "bitacora" : "resultado");
     }
   };
 
-  const reset = () => { setStep("intro"); setTipo(""); setDepto(""); setAnswers({}); setQIndex(0); };
+  const reset = () => { setStep("intro"); setTipo(""); setDepto(""); setAnswers({}); setQIndex(0); setRegistros([]); };
 
   return (
     <section id="ecocheck" className="py-24 bg-[#16211B] text-white">
@@ -328,6 +332,13 @@ export default function EcocheckSection() {
               </div>
             )}
 
+            {step === "bitacora" && (
+              <BitacoraRespel
+                onListo={(r) => { setRegistros(r); setStep("resultado"); }}
+                onOmitir={() => { setRegistros([]); setStep("resultado"); }}
+              />
+            )}
+
             {step === "resultado" && (
               <div>
                 <div className="flex items-center gap-5 mb-6">
@@ -365,6 +376,7 @@ export default function EcocheckSection() {
                     generaRespel={answers["q1"] === "si"}
                     rangoRespel={rangoRespel}
                     mesesRegistro={mesesRegistro}
+                    registros={registros}
                     generaACU={answers["q2"] === "si"}
                     destinoVertimiento={answers["q3"] || ""}
                   />
