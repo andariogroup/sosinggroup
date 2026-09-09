@@ -69,9 +69,9 @@ export const FUENTE_RESPEL: Fuente = {
   norma: "Decreto 1076 de 2015 (compila el Decreto 4741 de 2005)",
   articulo: "Artículo 2.2.6.1.6.2 — antes artículo 28 del Decreto 4741 de 2005",
   entidad: "Ministerio de Ambiente y Desarrollo Sostenible",
-  fuenteConsultada: "Gestor Normativo Función Pública · Resolución 1362 de 2007",
+  fuenteConsultada: "Gestor Normativo Función Pública — texto literal del artículo 28 verificado",
   urlOficial: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=18718",
-  nivelFuente: 2,
+  nivelFuente: 1,
   fechaVerificacion: "2026-09-08",
   confianza: "alta",
 };

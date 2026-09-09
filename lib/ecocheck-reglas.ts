@@ -607,9 +607,9 @@ export function obligacionesVertimientos(destino: string): Obligacion[] {
           articulo:
             "Artículo 39 — Responsabilidad del prestador del servicio de alcantarillado",
           entidad: "Ministerio de Ambiente, Vivienda y Desarrollo Territorial",
-          fuenteConsultada: "Gestor Normativo Función Pública",
+          fuenteConsultada: "Gestor Normativo Función Pública — texto literal del artículo 39 verificado",
           urlOficial: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=40620",
-          nivelFuente: 2,
+          nivelFuente: 1,
           fechaVerificacion: "2026-09-08",
           confianza: "alta",
         },
@@ -702,7 +702,9 @@ export const REGLAS_BLOQUEADAS = [
    ══════════════════════════════════════════════════════════════ */
 export const RADICACION = {
   plataforma: "VITAL — Ventanilla Integral de Trámites Ambientales en Línea",
-  url: "vital.anla.gov.co/ventanillasilpa/",
+  url: "anla.gov.co/01_anla/vital-ventanilla-integral-de-tramites-ambientales-en-linea",
+  urlAplicativo: "vital.anla.gov.co",
+  notaAcceso: "El aplicativo requiere sesión. La página informativa de la ANLA explica el procedimiento.",
   pasos: [
     "Registrarse en la plataforma y esperar la aprobación del registro",
     "Seleccionar el trámite y la autoridad competente",
