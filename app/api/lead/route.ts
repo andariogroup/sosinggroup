@@ -21,6 +21,7 @@ const CORREO_DESTINO = process.env.LEADS_EMAIL || "comercial@sosinggroup.com";
 const RESEND_KEY = process.env.RESEND_API_KEY || "";
 const WEBHOOK = process.env.LEADS_WEBHOOK || "";
 const FORMSUBMIT = process.env.FORMSUBMIT_ID || "";
+const WEB3FORMS = process.env.WEB3FORMS_KEY || "";
 
 type Lead = {
   nombre: string;
@@ -216,7 +217,45 @@ async function enviarResend(to: string, subject: string, html: string) {
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
 }
 
-/* ── Respaldo sin configuración: FormSubmit ───────────────── */
+/* ── Respaldo confiable desde servidor: Web3Forms ─────────────
+   A diferencia de FormSubmit, admite llamadas servidor-a-servidor.
+   Requiere una clave gratuita de web3forms.com — sin registro,
+   se obtiene indicando el correo de destino.
+   ─────────────────────────────────────────────────────────── */
+async function enviarWeb3Forms(d: Lead) {
+  const r = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      access_key: WEB3FORMS,
+      subject: `ECOCHECK · ${d.nombre} · riesgo ${d.nivelRiesgo}`,
+      from_name: "ECOCHECK — SOSING",
+      Nombre: d.nombre,
+      Empresa: d.empresa || "—",
+      Correo: d.email,
+      Celular: d.telefono || "—",
+      Actividad: d.tipoNegocio || "—",
+      Departamento: d.departamento || "—",
+      Autoridad: d.autoridad || "—",
+      Riesgo: d.nivelRiesgo || "—",
+      Obligaciones: (d.riesgos || []).join(" | ") || "—",
+    }),
+  });
+
+  const json = await r.json().catch(() => null);
+  if (!r.ok || !json?.success) {
+    throw new Error(`Web3Forms: ${json?.message || `HTTP ${r.status}`}`);
+  }
+}
+
+/* ── Respaldo: FormSubmit ─────────────────────────────────────
+   ADVERTENCIA: FormSubmit valida el origen de la petición y está
+   pensado para formularios de navegador. Desde el servidor puede
+   rechazar el envío. Se conserva como último recurso, nunca como
+   canal principal.
+
+   Devuelve HTTP 200 incluso cuando falla: hay que leer el cuerpo.
+   ─────────────────────────────────────────────────────────── */
 async function enviarFormSubmit(d: Lead) {
   const destino = FORMSUBMIT || CORREO_DESTINO;
   const r = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(destino)}`, {
@@ -235,7 +274,20 @@ async function enviarFormSubmit(d: Lead) {
       Obligaciones: (d.riesgos || []).join(" | ") || "—",
     }),
   });
-  if (!r.ok) throw new Error(`FormSubmit ${r.status}`);
+
+  if (!r.ok) throw new Error(`FormSubmit HTTP ${r.status}`);
+
+  /* HTTP 200 no significa entregado. Verificar el cuerpo. */
+  const cuerpo = await r.text();
+  let json: any = null;
+  try { json = JSON.parse(cuerpo); } catch { /* respuesta no JSON */ }
+
+  if (!json) throw new Error("FormSubmit: respuesta no interpretable");
+
+  const exito = json.success === true || json.success === "true";
+  if (!exito) {
+    throw new Error(`FormSubmit rechazó el envío: ${json.message || "sin detalle"}`);
+  }
 }
 
 /* ── Handler ──────────────────────────────────────────────── */
@@ -286,7 +338,17 @@ export async function POST(req: NextRequest) {
     } catch (e: any) { errores.push(`webhook: ${e.message}`); }
   }
 
-  // 4. Respaldo si nada funcionó
+  // 4. Respaldo desde servidor: Web3Forms
+  if (!resultados.interno && !resultados.webhook && WEB3FORMS) {
+    try {
+      await enviarWeb3Forms(d);
+      resultados.interno = true;
+    } catch (e: any) { errores.push(`web3forms: ${e.message}`); }
+  }
+
+  // 5. Último recurso: FormSubmit.
+  //    No es confiable desde el servidor. Solo se intenta si todo lo
+  //    demás falló, y su resultado se verifica leyendo el cuerpo.
   if (!resultados.interno && !resultados.webhook) {
     try {
       await enviarFormSubmit(d);
@@ -294,12 +356,23 @@ export async function POST(req: NextRequest) {
     } catch (e: any) { errores.push(`formsubmit: ${e.message}`); }
   }
 
+  /* Solo se reporta éxito cuando un canal confirmó la entrega */
   const entregado = resultados.interno || resultados.webhook;
 
   if (!entregado) {
     console.error("[ECOCHECK] Lead no entregado:", d.email, errores);
     return NextResponse.json(
-      { ok: false, error: "No pudimos registrar su solicitud" },
+      {
+        ok: false,
+        error: "No pudimos registrar su solicitud",
+        /* Diagnóstico sin exponer secretos: qué canales estaban disponibles */
+        canales: {
+          resend: RESEND_KEY ? "configurado" : "no configurado",
+          webhook: WEBHOOK ? "configurado" : "no configurado",
+          web3forms: WEB3FORMS ? "configurado" : "no configurado",
+          formsubmit: "último recurso, poco confiable desde servidor",
+        },
+      },
       { status: 502 }
     );
   }
